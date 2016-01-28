@@ -1,1421 +1,242 @@
-#reader(lib"read.ss""wxme")WXME0108 ## 
-#|
-   This file uses the GRacket editor format.
-   Open this file in DrRacket version 5.3.1 or later to read it.
+#lang eopl
 
-   Most likely, it was created by saving a program in DrRacket,
-   and it probably contains a program with non-text elements
-   (such as images or comment boxes).
+;******************************************************************************************
+;;;;; Interpretador Simple
 
-            http://racket-lang.org/
-|#
- 29 7 #"wxtext\0"
-3 1 6 #"wxtab\0"
-1 1 8 #"wximage\0"
-2 0 8 #"wxmedia\0"
-4 1 34 #"(lib \"syntax-browser.ss\" \"mrlib\")\0"
-1 0 16 #"drscheme:number\0"
-3 0 44 #"(lib \"number-snip.ss\" \"drscheme\" \"private\")\0"
-1 0 36 #"(lib \"comment-snip.ss\" \"framework\")\0"
-1 0 93
-(
- #"((lib \"collapsed-snipclass.ss\" \"framework\") (lib \"collapsed-sni"
- #"pclass-wxme.ss\" \"framework\"))\0"
-) 0 0 43 #"(lib \"collapsed-snipclass.ss\" \"framework\")\0"
-0 0 19 #"drscheme:sexp-snip\0"
-0 0 36 #"(lib \"cache-image-snip.ss\" \"mrlib\")\0"
-1 0 68
-(
- #"((lib \"image-core.ss\" \"mrlib\") (lib \"image-core-wxme.rkt\" \"mr"
- #"lib\"))\0"
-) 1 0 29 #"drscheme:bindings-snipclass%\0"
-1 0 88
-(
- #"((lib \"pict-snip.rkt\" \"drracket\" \"private\") (lib \"pict-snip.r"
- #"kt\" \"drracket\" \"private\"))\0"
-) 0 0 33 #"(lib \"bullet-snip.ss\" \"browser\")\0"
-0 0 25 #"(lib \"matrix.ss\" \"htdp\")\0"
-1 0 22 #"drscheme:lambda-snip%\0"
-1 0 57
-#"(lib \"hrule-snip.rkt\" \"macro-debugger\" \"syntax-browser\")\0"
-1 0 26 #"drscheme:pict-value-snip%\0"
-0 0 45 #"(lib \"image-snipr.ss\" \"slideshow\" \"private\")\0"
-1 0 38 #"(lib \"pict-snipclass.ss\" \"slideshow\")\0"
-2 0 55 #"(lib \"vertical-separator-snip.ss\" \"stepper\" \"private\")\0"
-1 0 18 #"drscheme:xml-snip\0"
-1 0 31 #"(lib \"xml-snipclass.ss\" \"xml\")\0"
-1 0 21 #"drscheme:scheme-snip\0"
-2 0 34 #"(lib \"scheme-snipclass.ss\" \"xml\")\0"
-1 0 10 #"text-box%\0"
-1 0 32 #"(lib \"text-snipclass.ss\" \"xml\")\0"
-1 0 1 6 #"wxloc\0"
-          0 0 57 0 1 #"\0"
-0 75 1 #"\0"
-0 12 90 -1 90 -1 3 -1 0 1 0 1 0 0 0 0 0 0 0 0 0 0 0 255 255 255 1 -1 0 9
-#"Standard\0"
-0 75 10 #"Monospace\0"
-0 12 90 -1 90 -1 3 -1 0 1 0 1 0 0 0 0 0 0 0 0 0 0 0 255 255 255 1 -1 2 1
-#"\0"
-0 -1 1 #"\0"
-1 0 -1 -1 -1 -1 -1 -1 0 0 0 0 0 0 1 1 1 1 1 1 0 0 0 0 0 0 -1 -1 2 24
-#"framework:default-color\0"
-0 -1 1 #"\0"
-1 0 -1 -1 -1 -1 -1 -1 0 0 0 0 0 0 0 0 0 1 1 1 0 0 0 0 0 0 -1 -1 2 1
-#"\0"
-0 -1 1 #"\0"
-1 0 -1 -1 -1 -1 -1 -1 0 0 0 0 0 0 0 0 0 1 1 1 150 0 150 0 0 0 -1 -1 2 15
-#"text:ports out\0"
-0 -1 1 #"\0"
-1 0 -1 -1 -1 -1 -1 -1 0 0 0 0 0 0 0 0 0 1 1 1 150 0 150 0 0 0 -1 -1 2 1
-#"\0"
-0 -1 1 #"\0"
-1.0 0 -1 -1 93 -1 -1 -1 0 0 0 0 0 0 0 0 0 1.0 1.0 1.0 255 0 0 0 0 0 -1
--1 2 15 #"text:ports err\0"
-0 -1 1 #"\0"
-1.0 0 -1 -1 93 -1 -1 -1 0 0 0 0 0 0 0 0 0 1.0 1.0 1.0 255 0 0 0 0 0 -1
--1 2 1 #"\0"
-0 -1 1 #"\0"
-1 0 -1 -1 -1 -1 -1 -1 0 0 0 0 0 0 0 0 0 1 1 1 0 0 175 0 0 0 -1 -1 2 17
-#"text:ports value\0"
-0 -1 1 #"\0"
-1 0 -1 -1 -1 -1 -1 -1 0 0 0 0 0 0 0 0 0 1 1 1 0 0 175 0 0 0 -1 -1 2 1
-#"\0"
-0 -1 1 #"\0"
-1.0 0 92 -1 -1 -1 -1 -1 0 0 0 0 0 0 0 0 0 1.0 1.0 1.0 34 139 34 0 0 0 -1
--1 2 27 #"Matching Parenthesis Style\0"
-0 -1 1 #"\0"
-1.0 0 92 -1 -1 -1 -1 -1 0 0 0 0 0 0 0 0 0 1.0 1.0 1.0 34 139 34 0 0 0 -1
--1 2 1 #"\0"
-0 -1 1 #"\0"
-1 0 -1 -1 -1 -1 -1 -1 0 0 0 0 0 0 0 0 0 1 1 1 38 38 128 0 0 0 -1 -1 2 37
-#"framework:syntax-color:scheme:symbol\0"
-0 -1 1 #"\0"
-1 0 -1 -1 -1 -1 -1 -1 0 0 0 0 0 0 0 0 0 1 1 1 38 38 128 0 0 0 -1 -1 2 38
-#"framework:syntax-color:scheme:keyword\0"
-0 -1 1 #"\0"
-1 0 -1 -1 -1 -1 -1 -1 0 0 0 0 0 0 0 0 0 1 1 1 38 38 128 0 0 0 -1 -1 2 1
-#"\0"
-0 -1 1 #"\0"
-1 0 -1 -1 -1 -1 -1 -1 0 0 0 0 0 0 0 0 0 1 1 1 194 116 31 0 0 0 -1 -1 2
-38 #"framework:syntax-color:scheme:comment\0"
-0 -1 1 #"\0"
-1 0 -1 -1 -1 -1 -1 -1 0 0 0 0 0 0 0 0 0 1 1 1 194 116 31 0 0 0 -1 -1 2 1
-#"\0"
-0 -1 1 #"\0"
-1 0 -1 -1 -1 -1 -1 -1 0 0 0 0 0 0 0 0 0 1 1 1 41 128 38 0 0 0 -1 -1 2 37
-#"framework:syntax-color:scheme:string\0"
-0 -1 1 #"\0"
-1 0 -1 -1 -1 -1 -1 -1 0 0 0 0 0 0 0 0 0 1 1 1 41 128 38 0 0 0 -1 -1 2 39
-#"framework:syntax-color:scheme:constant\0"
-0 -1 1 #"\0"
-1 0 -1 -1 -1 -1 -1 -1 0 0 0 0 0 0 0 0 0 1 1 1 41 128 38 0 0 0 -1 -1 2 1
-#"\0"
-0 -1 1 #"\0"
-1 0 -1 -1 -1 -1 -1 -1 0 0 0 0 0 0 0 0 0 1 1 1 132 60 36 0 0 0 -1 -1 2 42
-#"framework:syntax-color:scheme:parenthesis\0"
-0 -1 1 #"\0"
-1 0 -1 -1 -1 -1 -1 -1 0 0 0 0 0 0 0 0 0 1 1 1 132 60 36 0 0 0 -1 -1 2 1
-#"\0"
-0 -1 1 #"\0"
-1 0 -1 -1 -1 -1 -1 -1 0 0 0 0 0 0 0 0 0 1 1 1 255 0 0 0 0 0 -1 -1 2 36
-#"framework:syntax-color:scheme:error\0"
-0 -1 1 #"\0"
-1 0 -1 -1 -1 -1 -1 -1 0 0 0 0 0 0 0 0 0 1 1 1 255 0 0 0 0 0 -1 -1 2 1
-#"\0"
-0 -1 1 #"\0"
-1 0 -1 -1 -1 -1 -1 -1 0 0 0 0 0 0 0 0 0 1 1 1 0 0 0 0 0 0 -1 -1 2 36
-#"framework:syntax-color:scheme:other\0"
-0 -1 1 #"\0"
-1 0 -1 -1 -1 -1 -1 -1 0 0 0 0 0 0 0 0 0 1 1 1 0 0 0 0 0 0 -1 -1 2 1
-#"\0"
-0 -1 1 #"\0"
-1 0 -1 -1 -1 -1 -1 -1 0 0 0 0 0 0 0 0 0 1 1 1 81 112 203 0 0 0 -1 -1 2
-38 #"drracket:check-syntax:lexically-bound\0"
-0 -1 1 #"\0"
-1 0 -1 -1 -1 -1 -1 -1 0 0 0 0 0 0 0 0 0 1 1 1 81 112 203 0 0 0 -1 -1 2 1
-#"\0"
-0 -1 1 #"\0"
-1 0 -1 -1 -1 -1 -1 -1 0 0 0 0 0 0 0 0 0 1 1 1 178 34 34 0 0 0 -1 -1 2 28
-#"drracket:check-syntax:set!d\0"
-0 -1 1 #"\0"
-1 0 -1 -1 -1 -1 -1 -1 0 0 0 0 0 0 0 0 0 1 1 1 178 34 34 0 0 0 -1 -1 2 37
-#"drracket:check-syntax:unused-require\0"
-0 -1 1 #"\0"
-1 0 -1 -1 -1 -1 -1 -1 0 0 0 0 0 0 0 0 0 1 1 1 255 0 0 0 0 0 -1 -1 2 36
-#"drracket:check-syntax:free-variable\0"
-0 -1 1 #"\0"
-1 0 -1 -1 -1 -1 -1 -1 0 0 0 0 0 0 0 0 0 1 1 1 255 0 0 0 0 0 -1 -1 2 1
-#"\0"
-0 -1 1 #"\0"
-1 0 -1 -1 -1 -1 -1 -1 0 0 0 0 0 0 0 0 0 1 1 1 68 0 203 0 0 0 -1 -1 2 31
-#"drracket:check-syntax:imported\0"
-0 -1 1 #"\0"
-1 0 -1 -1 -1 -1 -1 -1 0 0 0 0 0 0 0 0 0 1 1 1 68 0 203 0 0 0 -1 -1 2 47
-#"drracket:check-syntax:my-obligation-style-pref\0"
-0 -1 1 #"\0"
-1 0 -1 -1 -1 -1 -1 -1 0 0 0 0 0 0 0 0 0 1 1 1 178 34 34 0 0 0 -1 -1 2 1
-#"\0"
-0 -1 1 #"\0"
-1 0 -1 -1 -1 -1 -1 -1 0 0 0 0 0 0 0 0 0 1 1 1 0 116 0 0 0 0 -1 -1 2 50
-#"drracket:check-syntax:their-obligation-style-pref\0"
-0 -1 1 #"\0"
-1 0 -1 -1 -1 -1 -1 -1 0 0 0 0 0 0 0 0 0 1 1 1 0 116 0 0 0 0 -1 -1 2 48
-#"drracket:check-syntax:unk-obligation-style-pref\0"
-0 -1 1 #"\0"
-1 0 -1 -1 -1 -1 -1 -1 0 0 0 0 0 0 0 0 0 1 1 1 0 0 0 0 0 0 -1 -1 2 1
-#"\0"
-0 -1 1 #"\0"
-1 0 -1 -1 -1 -1 -1 -1 0 0 0 0 0 0 0 0 0 1 1 1 139 142 28 0 0 0 -1 -1 2
-49 #"drracket:check-syntax:both-obligation-style-pref\0"
-0 -1 1 #"\0"
-1 0 -1 -1 -1 -1 -1 -1 0 0 0 0 0 0 0 0 0 1 1 1 139 142 28 0 0 0 -1 -1 2
-26 #"plt:htdp:test-coverage-on\0"
-0 -1 1 #"\0"
-1 0 -1 -1 -1 -1 -1 -1 0 0 0 0 0 0 0 0 0 1 1 1 0 0 0 0 0 0 -1 -1 2 1
-#"\0"
-0 -1 1 #"\0"
-1 0 -1 -1 -1 -1 -1 -1 0 0 0 0 0 1 0 0 0 0 0 0 255 165 0 0 0 0 -1 -1 2 27
-#"plt:htdp:test-coverage-off\0"
-0 -1 1 #"\0"
-1 0 -1 -1 -1 -1 -1 -1 0 0 0 0 0 1 0 0 0 0 0 0 255 165 0 0 0 0 -1 -1 4 1
-#"\0"
-0 70 1 #"\0"
-1.0 0 -1 -1 -1 -1 -1 -1 0 0 0 0 0 0 1.0 1.0 1.0 1.0 1.0 1.0 0 0 0 0 0 0
--1 -1 4 4 #"XML\0"
-0 70 1 #"\0"
-1.0 0 -1 -1 -1 -1 -1 -1 0 0 0 0 0 0 1.0 1.0 1.0 1.0 1.0 1.0 0 0 0 0 0 0
--1 -1 2 1 #"\0"
-0 -1 1 #"\0"
-1 0 -1 -1 -1 -1 -1 -1 0 0 0 0 0 0 0 0 0 1 1 1 34 139 34 0 0 0 -1 -1 2 37
-#"plt:module-language:test-coverage-on\0"
-0 -1 1 #"\0"
-1 0 -1 -1 -1 -1 -1 -1 0 0 0 0 0 0 0 0 0 1 1 1 34 139 34 0 0 0 -1 -1 2 1
-#"\0"
-0 -1 1 #"\0"
-1 0 -1 -1 -1 -1 -1 -1 0 0 0 0 0 0 0 0 0 1 1 1 176 48 96 0 0 0 -1 -1 2 38
-#"plt:module-language:test-coverage-off\0"
-0 -1 1 #"\0"
-1 0 -1 -1 -1 -1 -1 -1 0 0 0 0 0 0 0 0 0 1 1 1 176 48 96 0 0 0 -1 -1 4 1
-#"\0"
-0 71 1 #"\0"
-1.0 0 -1 -1 -1 -1 -1 -1 0 0 0 0 0 0 1.0 1.0 1.0 1.0 1.0 1.0 0 0 0 0 0 0
--1 -1 4 1 #"\0"
-0 -1 1 #"\0"
-1.0 0 -1 -1 -1 -1 -1 -1 1 0 0 0 0 0 0 0 0 1.0 1.0 1.0 0 0 255 0 0 0 -1
--1 4 1 #"\0"
-0 71 1 #"\0"
-1.0 0 -1 -1 -1 -1 -1 -1 1 0 0 0 0 0 0 0 0 1.0 1.0 1.0 0 0 255 0 0 0 -1
--1 4 1 #"\0"
-0 71 1 #"\0"
-1.0 0 -1 -1 -1 -1 -1 -1 0 0 0 0 0 0 0 0 0 1.0 1.0 1.0 0 100 0 0 0 0 -1
--1 2 1 #"\0"
-0 -1 1 #"\0"
-1 0 -1 -1 -1 -1 -1 -1 0 0 0 0 0 0 0 0 0 1 1 1 200 0 0 0 0 0 -1 -1 4 1
-#"\0"
-0 -1 1 #"\0"
-1.0 0 92 -1 -1 -1 -1 -1 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 255 255 0 -1 -1 4
-1 #"\0"
-0 -1 1 #"\0"
-1 0 -1 -1 -1 -1 -1 -1 0 0 0 0 0 0 1 1 1 1 1 1 0 0 0 0 0 0 -1 -1
-          0 1150 0 26 3 10 #"#lang eopl"
-0 0 22 29 1 #"\n"
-0 0 22 29 1 #"\n"
-0 0 17 3 91
-(
- #";*******************************************************************"
- #"***********************"
-) 0 0 22 29 1 #"\n"
-0 0 17 3 26 #";;;;; Interpretador Simple"
-0 0 22 29 1 #"\n"
-0 0 22 29 1 #"\n"
-0 0 17 3 56
-#";; La definici\303\263n BNF para las expresiones del lenguaje:"
-0 0 22 29 1 #"\n"
-0 0 17 3 2 #";;"
-0 0 22 29 1 #"\n"
-0 0 17 3 36 #";;  <program>       ::= <expression>"
-0 0 22 29 1 #"\n"
-0 0 17 3 41 #";;                      <a-program (exp)>"
-0 0 22 29 1 #"\n"
-0 0 17 3 32 #";;  <expression>    ::= <number>"
-0 0 22 29 1 #"\n"
-0 0 17 3 41 #";;                      <lit-exp (datum)>"
-0 0 22 29 1 #"\n"
-0 0 17 3 36 #";;                  ::= <identifier>"
-0 0 22 29 1 #"\n"
-0 0 17 3 38 #";;                      <var-exp (id)>"
-0 0 22 29 1 #"\n"
-0 0 17 3 56 #";;                  ::= <primitive> ({<expression>}*(,))"
-0 0 22 29 1 #"\n"
-0 0 17 3 50 #";;                      <primapp-exp (prim rands)>"
-0 0 22 29 1 #"\n"
-0 0 17 3 48 #";;  <primitive>     ::= + | - | * | add1 | sub1 "
-0 0 22 29 1 #"\n"
-0 0 22 29 1 #"\n"
-0 0 17 3 91
-(
- #";*******************************************************************"
- #"***********************"
-) 0 0 22 29 1 #"\n"
-0 0 22 29 1 #"\n"
-0 0 17 3 91
-(
- #";*******************************************************************"
- #"***********************"
-) 0 0 22 29 1 #"\n"
-0 0 17 3 24 #";Especificaci\303\263n L\303\251xica"
-0 0 22 29 1 #"\n"
-0 0 22 29 1 #"\n"
-0 0 22 3 1 #"("
-0 0 15 3 6 #"define"
-0 0 22 3 1 #" "
-0 0 14 3 31 #"scanner-spec-simple-interpreter"
-0 0 22 29 1 #"\n"
-0 0 20 3 1 #"'"
-0 0 22 3 2 #"(("
-0 0 14 3 8 #"white-sp"
-0 0 22 29 1 #"\n"
-0 0 22 3 4 #"   ("
-0 0 14 3 10 #"whitespace"
-0 0 22 3 2 #") "
-0 0 14 3 4 #"skip"
-0 0 22 3 1 #")"
-0 0 22 29 1 #"\n"
-0 0 22 3 3 #"  ("
-0 0 14 3 7 #"comment"
-0 0 22 29 1 #"\n"
-0 0 22 3 4 #"   ("
-0 0 19 3 3 #"\"%\""
-0 0 22 3 2 #" ("
-0 0 14 3 5 #"arbno"
-0 0 22 3 2 #" ("
-0 0 14 3 3 #"not"
-0 0 22 3 1 #" "
-0 0 20 3 9 #"#\\newline"
-0 0 22 3 4 #"))) "
-0 0 14 3 4 #"skip"
-0 0 22 3 1 #")"
-0 0 22 29 1 #"\n"
-0 0 22 3 3 #"  ("
-0 0 14 3 10 #"identifier"
-0 0 22 29 1 #"\n"
-0 0 22 3 4 #"   ("
-0 0 14 3 6 #"letter"
-0 0 22 3 2 #" ("
-0 0 14 3 5 #"arbno"
-0 0 22 3 2 #" ("
-0 0 14 3 2 #"or"
-0 0 22 3 1 #" "
-0 0 14 3 6 #"letter"
-0 0 22 3 1 #" "
-0 0 14 3 5 #"digit"
-0 0 22 3 1 #" "
-0 0 19 3 3 #"\"?\""
-0 0 22 3 4 #"))) "
-0 0 14 3 6 #"symbol"
-0 0 22 3 1 #")"
-0 0 22 29 1 #"\n"
-0 0 22 3 3 #"  ("
-0 0 14 3 6 #"number"
-0 0 22 29 1 #"\n"
-0 0 22 3 4 #"   ("
-0 0 14 3 5 #"digit"
-0 0 22 3 2 #" ("
-0 0 14 3 5 #"arbno"
-0 0 22 3 1 #" "
-0 0 14 3 5 #"digit"
-0 0 22 3 3 #")) "
-0 0 14 3 6 #"number"
-0 0 22 3 1 #")"
-0 0 22 29 1 #"\n"
-0 0 22 3 3 #"  ("
-0 0 14 3 6 #"number"
-0 0 22 29 1 #"\n"
-0 0 22 3 4 #"   ("
-0 0 19 3 3 #"\"-\""
-0 0 22 3 1 #" "
-0 0 14 3 5 #"digit"
-0 0 22 3 2 #" ("
-0 0 14 3 5 #"arbno"
-0 0 22 3 1 #" "
-0 0 14 3 5 #"digit"
-0 0 22 3 3 #")) "
-0 0 14 3 6 #"number"
-0 0 22 3 3 #")))"
-0 0 22 29 1 #"\n"
-0 0 22 29 1 #"\n"
-0 0 17 3 41
-#";Especificaci\303\263n Sint\303\241ctica (gram\303\241tica)"
-0 0 22 29 1 #"\n"
-0 0 22 29 1 #"\n"
-0 0 22 3 1 #"("
-0 0 15 3 6 #"define"
-0 0 22 3 1 #" "
-0 0 14 3 26 #"grammar-simple-interpreter"
-0 0 22 29 1 #"\n"
-0 0 22 3 2 #"  "
-0 0 20 3 1 #"'"
-0 0 22 3 2 #"(("
-0 0 14 3 7 #"program"
-0 0 22 3 2 #" ("
-0 0 14 3 10 #"expression"
-0 0 22 3 2 #") "
-0 0 14 3 9 #"a-program"
-0 0 22 3 1 #")"
-0 0 22 29 1 #"\n"
-0 0 22 3 5 #"    ("
-0 0 14 3 10 #"expression"
-0 0 22 3 2 #" ("
-0 0 14 3 6 #"number"
-0 0 22 3 2 #") "
-0 0 14 3 7 #"lit-exp"
-0 0 22 3 1 #")"
-0 0 22 29 1 #"\n"
-0 0 22 3 5 #"    ("
-0 0 14 3 10 #"expression"
-0 0 22 3 2 #" ("
-0 0 14 3 10 #"identifier"
-0 0 22 3 2 #") "
-0 0 14 3 7 #"var-exp"
-0 0 22 3 1 #")"
-0 0 22 29 1 #"\n"
-0 0 22 3 5 #"    ("
-0 0 14 3 10 #"expression"
-0 0 22 29 1 #"\n"
-0 0 22 3 6 #"     ("
-0 0 14 3 9 #"primitive"
-0 0 22 3 1 #" "
-0 0 19 3 3 #"\"(\""
-0 0 22 3 2 #" ("
-0 0 14 3 14 #"separated-list"
-0 0 22 3 1 #" "
-0 0 14 3 10 #"expression"
-0 0 22 3 1 #" "
-0 0 19 3 3 #"\",\""
-0 0 22 3 1 #")"
-0 0 19 3 3 #"\")\""
-0 0 22 3 1 #")"
-0 0 22 29 1 #"\n"
-0 0 22 3 5 #"     "
-0 0 14 3 11 #"primapp-exp"
-0 0 22 3 1 #")"
-0 0 22 29 1 #"\n"
-0 0 22 3 5 #"    ("
-0 0 14 3 9 #"primitive"
-0 0 22 3 2 #" ("
-0 0 19 3 3 #"\"+\""
-0 0 22 3 2 #") "
-0 0 14 3 8 #"add-prim"
-0 0 22 3 1 #")"
-0 0 22 29 1 #"\n"
-0 0 22 3 5 #"    ("
-0 0 14 3 9 #"primitive"
-0 0 22 3 2 #" ("
-0 0 19 3 3 #"\"-\""
-0 0 22 3 2 #") "
-0 0 14 3 14 #"substract-prim"
-0 0 22 3 1 #")"
-0 0 22 29 1 #"\n"
-0 0 22 3 5 #"    ("
-0 0 14 3 9 #"primitive"
-0 0 22 3 2 #" ("
-0 0 19 3 3 #"\"*\""
-0 0 22 3 2 #") "
-0 0 14 3 9 #"mult-prim"
-0 0 22 3 1 #")"
-0 0 22 29 1 #"\n"
-0 0 22 3 5 #"    ("
-0 0 14 3 9 #"primitive"
-0 0 22 3 2 #" ("
-0 0 19 3 6 #"\"add1\""
-0 0 22 3 2 #") "
-0 0 14 3 9 #"incr-prim"
-0 0 22 3 1 #")"
-0 0 22 29 1 #"\n"
-0 0 22 3 5 #"    ("
-0 0 14 3 9 #"primitive"
-0 0 22 3 2 #" ("
-0 0 19 3 6 #"\"sub1\""
-0 0 22 3 2 #") "
-0 0 14 3 9 #"decr-prim"
-0 0 22 3 3 #")))"
-0 0 22 29 1 #"\n"
-0 0 22 29 1 #"\n"
-0 0 22 29 1 #"\n"
-0 0 17 3 59
-#";Tipos de datos para la sintaxis abstracta de la gram\303\241tica"
-0 0 22 29 1 #"\n"
-0 0 22 29 1 #"\n"
-0 0 17 3 25 #";Construidos manualmente:"
-0 0 22 29 1 #"\n"
-0 0 22 29 1 #"\n"
-0 0 17 3 34 #";(define-datatype program program?"
-0 0 22 29 1 #"\n"
-0 0 17 3 13 #";  (a-program"
-0 0 22 29 1 #"\n"
-0 0 17 3 23 #";   (exp expression?)))"
-0 0 22 29 1 #"\n"
-0 0 17 3 1 #";"
-0 0 22 29 1 #"\n"
-0 0 17 3 40 #";(define-datatype expression expression?"
-0 0 22 29 1 #"\n"
-0 0 17 3 11 #";  (lit-exp"
-0 0 22 29 1 #"\n"
-0 0 17 3 20 #";   (datum number?))"
-0 0 22 29 1 #"\n"
-0 0 17 3 11 #";  (var-exp"
-0 0 22 29 1 #"\n"
-0 0 17 3 17 #";   (id symbol?))"
-0 0 22 29 1 #"\n"
-0 0 17 3 15 #";  (primapp-exp"
-0 0 22 29 1 #"\n"
-0 0 17 3 21 #";   (prim primitive?)"
-0 0 22 29 1 #"\n"
-0 0 17 3 35 #";   (rands (list-of expression?))))"
-0 0 22 29 1 #"\n"
-0 0 17 3 1 #";"
-0 0 22 29 1 #"\n"
-0 0 17 3 38 #";(define-datatype primitive primitive?"
-0 0 22 29 1 #"\n"
-0 0 17 3 13 #";  (add-prim)"
-0 0 22 29 1 #"\n"
-0 0 17 3 19 #";  (substract-prim)"
-0 0 22 29 1 #"\n"
-0 0 17 3 14 #";  (mult-prim)"
-0 0 22 29 1 #"\n"
-0 0 17 3 14 #";  (incr-prim)"
-0 0 22 29 1 #"\n"
-0 0 17 3 15 #";  (decr-prim))"
-0 0 22 29 1 #"\n"
-0 0 22 29 1 #"\n"
-0 0 17 3 30 #";Construidos autom\303\241ticamente:"
-0 0 22 29 1 #"\n"
-0 0 22 29 1 #"\n"
-0 0 22 3 1 #"("
-0 0 14 3 28 #"sllgen:make-define-datatypes"
-0 0 22 3 1 #" "
-0 0 14 3 31 #"scanner-spec-simple-interpreter"
-0 0 22 3 1 #" "
-0 0 14 3 26 #"grammar-simple-interpreter"
-0 0 22 3 1 #")"
-0 0 22 29 1 #"\n"
-0 0 22 29 1 #"\n"
-0 0 22 3 1 #"("
-0 0 15 3 6 #"define"
-0 0 22 3 1 #" "
-0 0 14 3 18 #"show-the-datatypes"
-0 0 22 29 1 #"\n"
-0 0 22 3 3 #"  ("
-0 0 15 3 6 #"lambda"
-0 0 22 3 5 #" () ("
-0 0 14 3 28 #"sllgen:list-define-datatypes"
-0 0 22 3 1 #" "
-0 0 14 3 31 #"scanner-spec-simple-interpreter"
-0 0 22 3 1 #" "
-0 0 14 3 26 #"grammar-simple-interpreter"
-0 0 22 3 3 #")))"
-0 0 22 29 1 #"\n"
-0 0 22 29 1 #"\n"
-0 0 17 3 92
-(
- #";*******************************************************************"
- #"************************"
-) 0 0 22 29 1 #"\n"
-0 0 17 3 26 #";Parser, Scanner, Interfaz"
-0 0 22 29 1 #"\n"
-0 0 22 29 1 #"\n"
-0 0 17 3 76
-(
- #";El FrontEnd (An\303\241lisis l\303\251xico (scanner) y sint\303\241"
- #"ctico (parser) integrados)"
-) 0 0 22 29 1 #"\n"
-0 0 22 29 1 #"\n"
-0 0 22 3 1 #"("
-0 0 15 3 6 #"define"
-0 0 22 3 1 #" "
-0 0 14 3 10 #"scan&parse"
-0 0 22 29 1 #"\n"
-0 0 22 3 3 #"  ("
-0 0 14 3 25 #"sllgen:make-string-parser"
-0 0 22 3 1 #" "
-0 0 14 3 31 #"scanner-spec-simple-interpreter"
-0 0 22 3 1 #" "
-0 0 14 3 26 #"grammar-simple-interpreter"
-0 0 22 3 2 #"))"
-0 0 22 29 1 #"\n"
-0 0 22 29 1 #"\n"
-0 0 17 3 32 #";El Analizador L\303\251xico (Scanner)"
-0 0 22 29 1 #"\n"
-0 0 22 29 1 #"\n"
-0 0 22 3 1 #"("
-0 0 15 3 6 #"define"
-0 0 22 3 1 #" "
-0 0 14 3 9 #"just-scan"
-0 0 22 29 1 #"\n"
-0 0 22 3 3 #"  ("
-0 0 14 3 26 #"sllgen:make-string-scanner"
-0 0 22 3 1 #" "
-0 0 14 3 31 #"scanner-spec-simple-interpreter"
-0 0 22 3 1 #" "
-0 0 14 3 26 #"grammar-simple-interpreter"
-0 0 22 3 2 #"))"
-0 0 22 29 1 #"\n"
-0 0 22 29 1 #"\n"
-0 0 17 3 65
-(
- #";El Interpretador (FrontEnd + Evaluaci\303\263n + se\303\261al para "
- #"lectura )"
-) 0 0 22 29 1 #"\n"
-0 0 22 29 1 #"\n"
-0 0 22 3 1 #"("
-0 0 15 3 6 #"define"
-0 0 22 3 1 #" "
-0 0 14 3 13 #"interpretador"
-0 0 22 29 1 #"\n"
-0 0 22 3 3 #"  ("
-0 0 14 3 20 #"sllgen:make-rep-loop"
-0 0 22 3 2 #"  "
-0 0 19 3 6 #"\"--> \""
-0 0 22 29 1 #"\n"
-0 0 22 3 5 #"    ("
-0 0 15 3 6 #"lambda"
-0 0 22 3 2 #" ("
-0 0 14 3 3 #"pgm"
-0 0 22 3 3 #") ("
-0 0 14 3 12 #"eval-program"
-0 0 22 3 2 #"  "
-0 0 14 3 3 #"pgm"
-0 0 22 3 2 #"))"
-0 0 22 29 1 #"\n"
-0 0 22 3 5 #"    ("
-0 0 14 3 25 #"sllgen:make-stream-parser"
-0 0 22 3 1 #" "
-0 0 22 29 1 #"\n"
-0 0 22 3 6 #"      "
-0 0 14 3 31 #"scanner-spec-simple-interpreter"
-0 0 22 29 1 #"\n"
-0 0 22 3 6 #"      "
-0 0 14 3 26 #"grammar-simple-interpreter"
-0 0 22 3 3 #")))"
-0 0 22 29 1 #"\n"
-0 0 22 29 1 #"\n"
-0 0 17 3 92
-(
- #";*******************************************************************"
- #"************************"
-) 0 0 22 29 1 #"\n"
-0 0 17 3 14 #";El Interprete"
-0 0 22 29 1 #"\n"
-0 0 22 29 1 #"\n"
-0 0 17 3 35 #";eval-program: <programa> -> numero"
-0 0 22 29 1 #"\n"
-0 0 17 3 106
-(
- #"; funci\303\263n que eval\303\272a un programa teniendo en cuenta un"
- #" ambiente dado (se inicializa dentro del programa)"
-) 0 0 22 29 1 #"\n"
-0 0 22 29 1 #"\n"
-0 0 22 3 1 #"("
-0 0 15 3 6 #"define"
-0 0 22 3 1 #" "
-0 0 14 3 12 #"eval-program"
-0 0 22 29 1 #"\n"
-0 0 22 3 3 #"  ("
-0 0 15 3 6 #"lambda"
-0 0 22 3 2 #" ("
-0 0 14 3 3 #"pgm"
-0 0 22 3 1 #")"
-0 0 22 29 1 #"\n"
-0 0 22 3 5 #"    ("
-0 0 15 3 5 #"cases"
-0 0 22 3 1 #" "
-0 0 14 3 7 #"program"
-0 0 22 3 1 #" "
-0 0 14 3 3 #"pgm"
-0 0 22 29 1 #"\n"
-0 0 22 3 7 #"      ("
-0 0 14 3 9 #"a-program"
-0 0 22 3 2 #" ("
-0 0 14 3 4 #"body"
-0 0 22 3 1 #")"
-0 0 22 29 1 #"\n"
-0 0 22 3 18 #"                 ("
-0 0 14 3 15 #"eval-expression"
-0 0 22 3 1 #" "
-0 0 14 3 4 #"body"
-0 0 22 3 2 #" ("
-0 0 14 3 8 #"init-env"
-0 0 22 3 6 #"))))))"
-0 0 22 29 1 #"\n"
-0 0 22 29 1 #"\n"
-0 0 17 3 18 #"; Ambiente inicial"
-0 0 22 29 1 #"\n"
-0 0 22 3 1 #"("
-0 0 15 3 6 #"define"
-0 0 22 3 1 #" "
-0 0 14 3 8 #"init-env"
-0 0 22 29 1 #"\n"
-0 0 22 3 3 #"  ("
-0 0 15 3 6 #"lambda"
-0 0 22 3 3 #" ()"
-0 0 22 29 1 #"\n"
-0 0 22 3 5 #"    ("
-0 0 14 3 10 #"extend-env"
-0 0 22 29 1 #"\n"
-0 0 22 3 5 #"     "
-0 0 20 3 1 #"'"
-0 0 22 3 1 #"("
-0 0 14 3 1 #"i"
-0 0 22 3 1 #" "
-0 0 14 3 1 #"v"
-0 0 22 3 1 #" "
-0 0 14 3 1 #"x"
-0 0 22 3 1 #")"
-0 0 22 29 1 #"\n"
-0 0 22 3 5 #"     "
-0 0 20 3 1 #"'"
-0 0 22 3 1 #"("
-0 0 20 3 1 #"1"
-0 0 22 3 1 #" "
-0 0 20 3 1 #"5"
-0 0 22 3 1 #" "
-0 0 20 3 2 #"10"
-0 0 22 3 1 #")"
-0 0 22 29 1 #"\n"
-0 0 22 3 6 #"     ("
-0 0 14 3 9 #"empty-env"
-0 0 22 3 4 #"))))"
-0 0 22 29 1 #"\n"
-0 0 22 29 1 #"\n"
-0 0 17 3 53 #";eval-expression: <expression> <enviroment> -> numero"
-0 0 22 29 1 #"\n"
-0 0 17 3 48 #"; evalua la expresi\303\263n en el ambiente de entrada"
-0 0 22 29 1 #"\n"
-0 0 22 3 1 #"("
-0 0 15 3 6 #"define"
-0 0 22 3 1 #" "
-0 0 14 3 15 #"eval-expression"
-0 0 22 29 1 #"\n"
-0 0 22 3 3 #"  ("
-0 0 15 3 6 #"lambda"
-0 0 22 3 2 #" ("
-0 0 14 3 3 #"exp"
-0 0 22 3 1 #" "
-0 0 14 3 3 #"env"
-0 0 22 3 1 #")"
-0 0 22 29 1 #"\n"
-0 0 22 3 5 #"    ("
-0 0 15 3 5 #"cases"
-0 0 22 3 1 #" "
-0 0 14 3 10 #"expression"
-0 0 22 3 1 #" "
-0 0 14 3 3 #"exp"
-0 0 22 29 1 #"\n"
-0 0 22 3 7 #"      ("
-0 0 14 3 7 #"lit-exp"
-0 0 22 3 2 #" ("
-0 0 14 3 5 #"datum"
-0 0 22 3 2 #") "
-0 0 14 3 5 #"datum"
-0 0 22 3 1 #")"
-0 0 22 29 1 #"\n"
-0 0 22 3 7 #"      ("
-0 0 14 3 7 #"var-exp"
-0 0 22 3 2 #" ("
-0 0 14 3 2 #"id"
-0 0 22 3 3 #") ("
-0 0 14 3 9 #"apply-env"
-0 0 22 3 1 #" "
-0 0 14 3 3 #"env"
-0 0 22 3 1 #" "
-0 0 14 3 2 #"id"
-0 0 22 3 2 #"))"
-0 0 22 29 1 #"\n"
-0 0 22 3 7 #"      ("
-0 0 14 3 11 #"primapp-exp"
-0 0 22 3 2 #" ("
-0 0 14 3 4 #"prim"
-0 0 22 3 1 #" "
-0 0 14 3 5 #"rands"
-0 0 22 3 1 #")"
-0 0 22 29 1 #"\n"
-0 0 22 3 20 #"                   ("
-0 0 15 3 3 #"let"
-0 0 22 3 3 #" (("
-0 0 14 3 4 #"args"
-0 0 22 3 2 #" ("
-0 0 14 3 10 #"eval-rands"
-0 0 22 3 1 #" "
-0 0 14 3 5 #"rands"
-0 0 22 3 1 #" "
-0 0 14 3 3 #"env"
-0 0 22 3 3 #")))"
-0 0 22 29 1 #"\n"
-0 0 22 3 22 #"                     ("
-0 0 14 3 15 #"apply-primitive"
-0 0 22 3 1 #" "
-0 0 14 3 4 #"prim"
-0 0 22 3 1 #" "
-0 0 14 3 4 #"args"
-0 0 22 3 6 #"))))))"
-0 0 22 29 1 #"\n"
-0 0 22 29 1 #"\n"
-0 0 17 3 75
-(
- #"; funciones auxiliares para aplicar eval-expression a cada elemento "
- #"de una "
-) 0 0 22 29 1 #"\n"
-0 0 17 3 34 #"; lista de operandos (expresiones)"
-0 0 22 29 1 #"\n"
-0 0 22 3 1 #"("
-0 0 15 3 6 #"define"
-0 0 22 3 1 #" "
-0 0 14 3 10 #"eval-rands"
-0 0 22 29 1 #"\n"
-0 0 22 3 3 #"  ("
-0 0 15 3 6 #"lambda"
-0 0 22 3 2 #" ("
-0 0 14 3 5 #"rands"
-0 0 22 3 1 #" "
-0 0 14 3 3 #"env"
-0 0 22 3 1 #")"
-0 0 22 29 1 #"\n"
-0 0 22 3 5 #"    ("
-0 0 14 3 3 #"map"
-0 0 22 3 2 #" ("
-0 0 15 3 6 #"lambda"
-0 0 22 3 2 #" ("
-0 0 14 3 1 #"x"
-0 0 22 3 3 #") ("
-0 0 14 3 9 #"eval-rand"
-0 0 22 3 1 #" "
-0 0 14 3 1 #"x"
-0 0 22 3 1 #" "
-0 0 14 3 3 #"env"
-0 0 22 3 3 #")) "
-0 0 14 3 5 #"rands"
-0 0 22 3 3 #")))"
-0 0 22 29 1 #"\n"
-0 0 22 29 1 #"\n"
-0 0 22 3 1 #"("
-0 0 15 3 6 #"define"
-0 0 22 3 1 #" "
-0 0 14 3 9 #"eval-rand"
-0 0 22 29 1 #"\n"
-0 0 22 3 3 #"  ("
-0 0 15 3 6 #"lambda"
-0 0 22 3 2 #" ("
-0 0 14 3 4 #"rand"
-0 0 22 3 1 #" "
-0 0 14 3 3 #"env"
-0 0 22 3 1 #")"
-0 0 22 29 1 #"\n"
-0 0 22 3 5 #"    ("
-0 0 14 3 15 #"eval-expression"
-0 0 22 3 1 #" "
-0 0 14 3 4 #"rand"
-0 0 22 3 1 #" "
-0 0 14 3 3 #"env"
-0 0 22 3 3 #")))"
-0 0 22 29 1 #"\n"
-0 0 22 29 1 #"\n"
-0 0 17 3 60
-#";apply-primitive: <primitiva> <list-of-expression> -> numero"
-0 0 22 29 1 #"\n"
-0 0 22 3 1 #"("
-0 0 15 3 6 #"define"
-0 0 22 3 1 #" "
-0 0 14 3 15 #"apply-primitive"
-0 0 22 29 1 #"\n"
-0 0 22 3 3 #"  ("
-0 0 15 3 6 #"lambda"
-0 0 22 3 2 #" ("
-0 0 14 3 4 #"prim"
-0 0 22 3 1 #" "
-0 0 14 3 4 #"args"
-0 0 22 3 1 #")"
-0 0 22 29 1 #"\n"
-0 0 22 3 5 #"    ("
-0 0 15 3 5 #"cases"
-0 0 22 3 1 #" "
-0 0 14 3 9 #"primitive"
-0 0 22 3 1 #" "
-0 0 14 3 4 #"prim"
-0 0 22 29 1 #"\n"
-0 0 22 3 7 #"      ("
-0 0 14 3 8 #"add-prim"
-0 0 22 3 5 #" () ("
-0 0 14 3 1 #"+"
-0 0 22 3 2 #" ("
-0 0 14 3 3 #"car"
-0 0 22 3 1 #" "
-0 0 14 3 4 #"args"
-0 0 22 3 3 #") ("
-0 0 14 3 4 #"cadr"
-0 0 22 3 1 #" "
-0 0 14 3 4 #"args"
-0 0 22 3 3 #")))"
-0 0 22 29 1 #"\n"
-0 0 22 3 7 #"      ("
-0 0 14 3 14 #"substract-prim"
-0 0 22 3 5 #" () ("
-0 0 14 3 1 #"-"
-0 0 22 3 2 #" ("
-0 0 14 3 3 #"car"
-0 0 22 3 1 #" "
-0 0 14 3 4 #"args"
-0 0 22 3 3 #") ("
-0 0 14 3 4 #"cadr"
-0 0 22 3 1 #" "
-0 0 14 3 4 #"args"
-0 0 22 3 3 #")))"
-0 0 22 29 1 #"\n"
-0 0 22 3 7 #"      ("
-0 0 14 3 9 #"mult-prim"
-0 0 22 3 5 #" () ("
-0 0 14 3 1 #"*"
-0 0 22 3 2 #" ("
-0 0 14 3 3 #"car"
-0 0 22 3 1 #" "
-0 0 14 3 4 #"args"
-0 0 22 3 3 #") ("
-0 0 14 3 4 #"cadr"
-0 0 22 3 1 #" "
-0 0 14 3 4 #"args"
-0 0 22 3 3 #")))"
-0 0 22 29 1 #"\n"
-0 0 22 3 7 #"      ("
-0 0 14 3 9 #"incr-prim"
-0 0 22 3 5 #" () ("
-0 0 14 3 1 #"+"
-0 0 22 3 2 #" ("
-0 0 14 3 3 #"car"
-0 0 22 3 1 #" "
-0 0 14 3 4 #"args"
-0 0 22 3 2 #") "
-0 0 20 3 1 #"1"
-0 0 22 3 2 #"))"
-0 0 22 29 1 #"\n"
-0 0 22 3 7 #"      ("
-0 0 14 3 9 #"decr-prim"
-0 0 22 3 5 #" () ("
-0 0 14 3 1 #"-"
-0 0 22 3 2 #" ("
-0 0 14 3 3 #"car"
-0 0 22 3 1 #" "
-0 0 14 3 4 #"args"
-0 0 22 3 2 #") "
-0 0 20 3 1 #"1"
-0 0 22 3 5 #")))))"
-0 0 22 29 1 #"\n"
-0 0 22 29 1 #"\n"
-0 0 17 3 92
-(
- #";*******************************************************************"
- #"************************"
-) 0 0 22 29 1 #"\n"
-0 0 17 3 10 #";Ambientes"
-0 0 22 29 1 #"\n"
-0 0 22 29 1 #"\n"
-0 0 17 3 38 #";definici\303\263n del tipo de dato ambiente"
-0 0 22 29 1 #"\n"
-0 0 22 3 1 #"("
-0 0 15 3 15 #"define-datatype"
-0 0 22 3 1 #" "
-0 0 14 3 11 #"environment"
-0 0 22 3 1 #" "
-0 0 14 3 12 #"environment?"
-0 0 22 29 1 #"\n"
-0 0 22 3 3 #"  ("
-0 0 14 3 16 #"empty-env-record"
-0 0 22 3 1 #")"
-0 0 22 29 1 #"\n"
-0 0 22 3 3 #"  ("
-0 0 14 3 19 #"extended-env-record"
-0 0 22 3 2 #" ("
-0 0 14 3 4 #"syms"
-0 0 22 3 2 #" ("
-0 0 14 3 7 #"list-of"
-0 0 22 3 1 #" "
-0 0 14 3 7 #"symbol?"
-0 0 22 3 2 #"))"
-0 0 22 29 1 #"\n"
-0 0 22 3 24 #"                       ("
-0 0 14 3 4 #"vals"
-0 0 22 3 2 #" ("
-0 0 14 3 7 #"list-of"
-0 0 22 3 1 #" "
-0 0 14 3 13 #"scheme-value?"
-0 0 22 3 2 #"))"
-0 0 22 29 1 #"\n"
-0 0 22 3 24 #"                       ("
-0 0 14 3 3 #"env"
-0 0 22 3 1 #" "
-0 0 14 3 12 #"environment?"
-0 0 22 3 3 #")))"
-0 0 22 29 1 #"\n"
-0 0 22 29 1 #"\n"
-0 0 22 3 1 #"("
-0 0 15 3 6 #"define"
-0 0 22 3 1 #" "
-0 0 14 3 13 #"scheme-value?"
-0 0 22 3 2 #" ("
-0 0 15 3 6 #"lambda"
-0 0 22 3 2 #" ("
-0 0 14 3 1 #"v"
-0 0 22 3 2 #") "
-0 0 20 3 2 #"#t"
-0 0 22 3 2 #"))"
-0 0 22 29 1 #"\n"
-0 0 22 29 1 #"\n"
-0 0 17 3 30 #";empty-env:      -> enviroment"
-0 0 22 29 1 #"\n"
-0 0 17 3 37 #";funci\303\263n que crea un ambiente vac\303\255o"
-0 0 22 29 1 #"\n"
-0 0 22 3 1 #"("
-0 0 15 3 6 #"define"
-0 0 22 3 1 #" "
-0 0 14 3 9 #"empty-env"
-0 0 22 3 2 #"  "
-0 0 22 29 1 #"\n"
-0 0 22 3 3 #"  ("
-0 0 15 3 6 #"lambda"
-0 0 22 3 3 #" ()"
-0 0 22 29 1 #"\n"
-0 0 22 3 5 #"    ("
-0 0 14 3 16 #"empty-env-record"
-0 0 22 3 10 #")))       "
-0 0 17 3 43 #";llamado al constructor de ambiente vac\303\255o "
-0 0 22 29 1 #"\n"
-0 0 22 29 1 #"\n"
-0 0 22 29 1 #"\n"
-0 0 17 3 73
-(
- #";extend-env: <list-of symbols> <list-of numbers> enviroment -> envir"
- #"oment"
-) 0 0 22 29 1 #"\n"
-0 0 17 3 40 #";funci\303\263n que crea un ambiente extendido"
-0 0 22 29 1 #"\n"
-0 0 22 3 1 #"("
-0 0 15 3 6 #"define"
-0 0 22 3 1 #" "
-0 0 14 3 10 #"extend-env"
-0 0 22 29 1 #"\n"
-0 0 22 3 3 #"  ("
-0 0 15 3 6 #"lambda"
-0 0 22 3 2 #" ("
-0 0 14 3 4 #"syms"
-0 0 22 3 1 #" "
-0 0 14 3 4 #"vals"
-0 0 22 3 1 #" "
-0 0 14 3 3 #"env"
-0 0 22 3 1 #")"
-0 0 22 29 1 #"\n"
-0 0 22 3 5 #"    ("
-0 0 14 3 19 #"extended-env-record"
-0 0 22 3 1 #" "
-0 0 14 3 4 #"syms"
-0 0 22 3 1 #" "
-0 0 14 3 4 #"vals"
-0 0 22 3 1 #" "
-0 0 14 3 3 #"env"
-0 0 22 3 4 #"))) "
-0 0 22 29 1 #"\n"
-0 0 22 29 1 #"\n"
-0 0 17 3 46
-#";funci\303\263n que busca un s\303\255mbolo en un ambiente"
-0 0 22 29 1 #"\n"
-0 0 22 3 1 #"("
-0 0 15 3 6 #"define"
-0 0 22 3 1 #" "
-0 0 14 3 9 #"apply-env"
-0 0 22 29 1 #"\n"
-0 0 22 3 3 #"  ("
-0 0 15 3 6 #"lambda"
-0 0 22 3 2 #" ("
-0 0 14 3 3 #"env"
-0 0 22 3 1 #" "
-0 0 14 3 3 #"sym"
-0 0 22 3 1 #")"
-0 0 22 29 1 #"\n"
-0 0 22 3 5 #"    ("
-0 0 15 3 5 #"cases"
-0 0 22 3 1 #" "
-0 0 14 3 11 #"environment"
-0 0 22 3 1 #" "
-0 0 14 3 3 #"env"
-0 0 22 29 1 #"\n"
-0 0 22 3 7 #"      ("
-0 0 14 3 16 #"empty-env-record"
-0 0 22 3 3 #" ()"
-0 0 22 29 1 #"\n"
-0 0 22 3 25 #"                        ("
-0 0 14 3 10 #"eopl:error"
-0 0 22 3 1 #" "
-0 0 20 3 1 #"'"
-0 0 14 3 9 #"apply-env"
-0 0 22 3 1 #" "
-0 0 19 3 19 #"\"No binding for ~s\""
-0 0 22 3 1 #" "
-0 0 14 3 3 #"sym"
-0 0 22 3 2 #"))"
-0 0 22 29 1 #"\n"
-0 0 22 3 7 #"      ("
-0 0 14 3 19 #"extended-env-record"
-0 0 22 3 2 #" ("
-0 0 14 3 4 #"syms"
-0 0 22 3 1 #" "
-0 0 14 3 4 #"vals"
-0 0 22 3 1 #" "
-0 0 14 3 3 #"env"
-0 0 22 3 1 #")"
-0 0 22 29 1 #"\n"
-0 0 22 3 28 #"                           ("
-0 0 15 3 3 #"let"
-0 0 22 3 3 #" (("
-0 0 14 3 3 #"pos"
-0 0 22 3 2 #" ("
-0 0 14 3 18 #"list-find-position"
-0 0 22 3 1 #" "
-0 0 14 3 3 #"sym"
-0 0 22 3 1 #" "
-0 0 14 3 4 #"syms"
-0 0 22 3 3 #")))"
-0 0 22 29 1 #"\n"
-0 0 22 3 30 #"                             ("
-0 0 14 3 2 #"if"
-0 0 22 3 2 #" ("
-0 0 14 3 7 #"number?"
-0 0 22 3 1 #" "
-0 0 14 3 3 #"pos"
-0 0 22 3 1 #")"
-0 0 22 29 1 #"\n"
-0 0 22 3 34 #"                                 ("
-0 0 14 3 8 #"list-ref"
-0 0 22 3 1 #" "
-0 0 14 3 4 #"vals"
-0 0 22 3 1 #" "
-0 0 14 3 3 #"pos"
-0 0 22 3 1 #")"
-0 0 22 29 1 #"\n"
-0 0 22 3 34 #"                                 ("
-0 0 14 3 9 #"apply-env"
-0 0 22 3 1 #" "
-0 0 14 3 3 #"env"
-0 0 22 3 1 #" "
-0 0 14 3 3 #"sym"
-0 0 22 3 7 #")))))))"
-0 0 22 29 1 #"\n"
-0 0 22 29 1 #"\n"
-0 0 22 29 1 #"\n"
-0 0 17 3 89
-(
- #";*******************************************************************"
- #"*********************"
-) 0 0 22 29 1 #"\n"
-0 0 17 3 21 #";Funciones Auxiliares"
-0 0 22 29 1 #"\n"
-0 0 22 29 1 #"\n"
-0 0 17 3 65
-(
- #"; funciones auxiliares para encontrar la posici\303\263n de un s\303"
- #"\255mbolo"
-) 0 0 22 29 1 #"\n"
-0 0 17 3 40 #"; en la lista de s\303\255mbolos de unambiente"
-0 0 22 29 1 #"\n"
-0 0 22 29 1 #"\n"
-0 0 22 3 1 #"("
-0 0 15 3 6 #"define"
-0 0 22 3 1 #" "
-0 0 14 3 18 #"list-find-position"
-0 0 22 29 1 #"\n"
-0 0 22 3 3 #"  ("
-0 0 15 3 6 #"lambda"
-0 0 22 3 2 #" ("
-0 0 14 3 3 #"sym"
-0 0 22 3 1 #" "
-0 0 14 3 3 #"los"
-0 0 22 3 1 #")"
-0 0 22 29 1 #"\n"
-0 0 22 3 5 #"    ("
-0 0 14 3 10 #"list-index"
-0 0 22 3 2 #" ("
-0 0 15 3 6 #"lambda"
-0 0 22 3 2 #" ("
-0 0 14 3 4 #"sym1"
-0 0 22 3 3 #") ("
-0 0 14 3 4 #"eqv?"
-0 0 22 3 1 #" "
-0 0 14 3 4 #"sym1"
-0 0 22 3 1 #" "
-0 0 14 3 3 #"sym"
-0 0 22 3 3 #")) "
-0 0 14 3 3 #"los"
-0 0 22 3 3 #")))"
-0 0 22 29 1 #"\n"
-0 0 22 29 1 #"\n"
-0 0 22 3 1 #"("
-0 0 15 3 6 #"define"
-0 0 22 3 1 #" "
-0 0 14 3 10 #"list-index"
-0 0 22 29 1 #"\n"
-0 0 22 3 3 #"  ("
-0 0 15 3 6 #"lambda"
-0 0 22 3 2 #" ("
-0 0 14 3 4 #"pred"
-0 0 22 3 1 #" "
-0 0 14 3 2 #"ls"
-0 0 22 3 1 #")"
-0 0 22 29 1 #"\n"
-0 0 22 3 5 #"    ("
-0 0 15 3 4 #"cond"
-0 0 22 29 1 #"\n"
-0 0 22 3 8 #"      (("
-0 0 14 3 5 #"null?"
-0 0 22 3 1 #" "
-0 0 14 3 2 #"ls"
-0 0 22 3 2 #") "
-0 0 20 3 2 #"#f"
-0 0 22 3 1 #")"
-0 0 22 29 1 #"\n"
-0 0 22 3 8 #"      (("
-0 0 14 3 4 #"pred"
-0 0 22 3 2 #" ("
-0 0 14 3 3 #"car"
-0 0 22 3 1 #" "
-0 0 14 3 2 #"ls"
-0 0 22 3 3 #")) "
-0 0 20 3 1 #"0"
-0 0 22 3 1 #")"
-0 0 22 29 1 #"\n"
-0 0 22 3 7 #"      ("
-0 0 14 3 4 #"else"
-0 0 22 3 2 #" ("
-0 0 15 3 3 #"let"
-0 0 22 3 3 #" (("
-0 0 14 3 12 #"list-index-r"
-0 0 22 3 2 #" ("
-0 0 14 3 10 #"list-index"
-0 0 22 3 1 #" "
-0 0 14 3 4 #"pred"
-0 0 22 3 2 #" ("
-0 0 14 3 3 #"cdr"
-0 0 22 3 1 #" "
-0 0 14 3 2 #"ls"
-0 0 22 3 4 #"))))"
-0 0 22 29 1 #"\n"
-0 0 22 3 15 #"              ("
-0 0 14 3 2 #"if"
-0 0 22 3 2 #" ("
-0 0 14 3 7 #"number?"
-0 0 22 3 1 #" "
-0 0 14 3 12 #"list-index-r"
-0 0 22 3 1 #")"
-0 0 22 29 1 #"\n"
-0 0 22 3 17 #"                ("
-0 0 14 3 1 #"+"
-0 0 22 3 1 #" "
-0 0 14 3 12 #"list-index-r"
-0 0 22 3 1 #" "
-0 0 20 3 1 #"1"
-0 0 22 3 1 #")"
-0 0 22 29 1 #"\n"
-0 0 22 3 16 #"                "
-0 0 20 3 2 #"#f"
-0 0 22 3 6 #"))))))"
-0 0 22 29 1 #"\n"
-0 0 22 29 1 #"\n"
-0 0 17 3 91
-(
- #";*******************************************************************"
- #"***********************"
-) 0 0 22 29 1 #"\n"
-0 0 17 3 8 #";Pruebas"
-0 0 22 29 1 #"\n"
-0 0 22 29 1 #"\n"
-0 0 22 3 1 #"("
-0 0 14 3 18 #"show-the-datatypes"
-0 0 22 3 1 #")"
-0 0 22 29 1 #"\n"
-0 0 14 3 9 #"just-scan"
-0 0 22 29 1 #"\n"
-0 0 14 3 10 #"scan&parse"
-0 0 22 29 1 #"\n"
-0 0 22 3 1 #"("
-0 0 14 3 9 #"just-scan"
-0 0 22 3 1 #" "
-0 0 19 3 9 #"\"add1(x)\""
-0 0 22 3 1 #")"
-0 0 22 29 1 #"\n"
-0 0 22 3 1 #"("
-0 0 14 3 9 #"just-scan"
-0 0 22 3 1 #" "
-0 0 19 3 20 #"\"add1(   x   )%cccc\""
-0 0 22 3 1 #")"
-0 0 22 29 1 #"\n"
-0 0 22 3 1 #"("
-0 0 14 3 9 #"just-scan"
-0 0 22 3 1 #" "
-0 0 19 3 25 #"\"add1(  +(5, x)   )%cccc\""
-0 0 22 3 1 #")"
-0 0 22 29 1 #"\n"
-0 0 22 3 1 #"("
-0 0 14 3 9 #"just-scan"
-0 0 22 3 1 #" "
-0 0 19 3 24 #"\"add1(  +(5, %ccccc x) \""
-0 0 22 3 1 #")"
-0 0 22 29 1 #"\n"
-0 0 22 3 1 #"("
-0 0 14 3 10 #"scan&parse"
-0 0 22 3 1 #" "
-0 0 19 3 9 #"\"add1(x)\""
-0 0 22 3 1 #")"
-0 0 22 29 1 #"\n"
-0 0 22 3 1 #"("
-0 0 14 3 10 #"scan&parse"
-0 0 22 3 1 #" "
-0 0 19 3 20 #"\"add1(   x   )%cccc\""
-0 0 22 3 1 #")"
-0 0 22 29 1 #"\n"
-0 0 22 3 1 #"("
-0 0 14 3 10 #"scan&parse"
-0 0 22 3 1 #" "
-0 0 19 3 25 #"\"add1(  +(5, x)   )%cccc\""
-0 0 22 3 1 #")"
-0 0 22 29 1 #"\n"
-0 0 22 3 1 #"("
-0 0 14 3 10 #"scan&parse"
-0 0 22 3 1 #" "
-0 0 19 3 18 #"\"add1(  +(5, %cccc"
-0 0 19 29 1 #"\n"
-0 0 19 3 5 #"x)) \""
-0 0 22 3 1 #")"
-0 0 22 29 1 #"\n"
-0 0 22 29 1 #"\n"
-0 0 22 3 1 #"("
-0 0 15 3 6 #"define"
-0 0 22 3 1 #" "
-0 0 14 3 5 #"caso1"
-0 0 22 3 2 #" ("
-0 0 14 3 11 #"primapp-exp"
-0 0 22 3 2 #" ("
-0 0 14 3 9 #"incr-prim"
-0 0 22 3 3 #") ("
-0 0 14 3 4 #"list"
-0 0 22 3 2 #" ("
-0 0 14 3 7 #"lit-exp"
-0 0 22 3 1 #" "
-0 0 20 3 1 #"5"
-0 0 22 3 4 #"))))"
-0 0 22 29 1 #"\n"
-0 0 22 3 1 #"("
-0 0 15 3 6 #"define"
-0 0 22 3 1 #" "
-0 0 14 3 10 #"exp-numero"
-0 0 22 3 2 #" ("
-0 0 14 3 7 #"lit-exp"
-0 0 22 3 1 #" "
-0 0 20 3 1 #"8"
-0 0 22 3 2 #"))"
-0 0 22 29 1 #"\n"
-0 0 22 3 1 #"("
-0 0 15 3 6 #"define"
-0 0 22 3 1 #" "
-0 0 14 3 9 #"exp-ident"
-0 0 22 3 2 #" ("
-0 0 14 3 7 #"var-exp"
-0 0 22 3 1 #" "
-0 0 20 3 1 #"'"
-0 0 14 3 1 #"c"
-0 0 22 3 2 #"))"
-0 0 22 29 1 #"\n"
-0 0 22 3 1 #"("
-0 0 15 3 6 #"define"
-0 0 22 3 1 #" "
-0 0 14 3 7 #"exp-app"
-0 0 22 3 2 #" ("
-0 0 14 3 11 #"primapp-exp"
-0 0 22 3 2 #" ("
-0 0 14 3 8 #"add-prim"
-0 0 22 3 3 #") ("
-0 0 14 3 4 #"list"
-0 0 22 3 1 #" "
-0 0 14 3 10 #"exp-numero"
-0 0 22 3 1 #" "
-0 0 14 3 9 #"exp-ident"
-0 0 22 3 3 #")))"
-0 0 22 29 1 #"\n"
-0 0 22 3 1 #"("
-0 0 15 3 6 #"define"
-0 0 22 3 1 #" "
-0 0 14 3 8 #"programa"
-0 0 22 3 2 #" ("
-0 0 14 3 9 #"a-program"
-0 0 22 3 1 #" "
-0 0 14 3 7 #"exp-app"
-0 0 22 3 2 #"))"
-0 0 22 29 1 #"\n"
-0 0 22 3 1 #"("
-0 0 15 3 6 #"define"
-0 0 22 3 1 #" "
-0 0 14 3 21 #"una-expresion-dificil"
-0 0 22 3 2 #" ("
-0 0 14 3 11 #"primapp-exp"
-0 0 22 3 2 #" ("
-0 0 14 3 9 #"mult-prim"
-0 0 22 3 1 #")"
-0 0 22 29 1 #"\n"
-0 0 22 3 44 #"                                           ("
-0 0 14 3 4 #"list"
-0 0 22 3 2 #" ("
-0 0 14 3 11 #"primapp-exp"
-0 0 22 3 2 #" ("
-0 0 14 3 9 #"incr-prim"
-0 0 22 3 1 #")"
-0 0 22 29 1 #"\n"
-0 0 22 3 63
-#"                                                              ("
-0 0 14 3 4 #"list"
-0 0 22 3 2 #" ("
-0 0 14 3 7 #"var-exp"
-0 0 22 3 1 #" "
-0 0 20 3 1 #"'"
-0 0 14 3 1 #"v"
-0 0 22 3 1 #")"
-0 0 22 29 1 #"\n"
-0 0 22 3 69
-(
- #"                                                                    "
- #"("
-) 0 0 14 3 7 #"var-exp"
-0 0 22 3 1 #" "
-0 0 20 3 1 #"'"
-0 0 14 3 1 #"y"
-0 0 22 3 3 #")))"
-0 0 22 29 1 #"\n"
-0 0 22 3 50 #"                                                 ("
-0 0 14 3 7 #"var-exp"
-0 0 22 3 1 #" "
-0 0 20 3 1 #"'"
-0 0 14 3 1 #"x"
-0 0 22 3 1 #")"
-0 0 22 29 1 #"\n"
-0 0 22 3 50 #"                                                 ("
-0 0 14 3 7 #"lit-exp"
-0 0 22 3 1 #" "
-0 0 20 3 3 #"200"
-0 0 22 3 4 #"))))"
-0 0 22 29 1 #"\n"
-0 0 22 3 1 #"("
-0 0 15 3 6 #"define"
-0 0 22 3 1 #" "
-0 0 14 3 19 #"un-programa-dificil"
-0 0 22 29 1 #"\n"
-0 0 22 3 5 #"    ("
-0 0 14 3 9 #"a-program"
-0 0 22 3 1 #" "
-0 0 14 3 21 #"una-expresion-dificil"
-0 0 22 3 2 #"))"
-0 0 22 29 1 #"\n"
-0 0 22 29 1 #"\n"
-0           0
+;; La definición BNF para las expresiones del lenguaje:
+;;
+;;  <program>       ::= <expression>
+;;                      <a-program (exp)>
+;;  <expression>    ::= <number>
+;;                      <lit-exp (datum)>
+;;                  ::= <identifier>
+;;                      <var-exp (id)>
+;;                  ::= <primitive> ({<expression>}*(,))
+;;                      <primapp-exp (prim rands)>
+;;  <primitive>     ::= + | - | * | add1 | sub1 
+
+;******************************************************************************************
+
+;******************************************************************************************
+;Especificación Léxica
+
+(define scanner-spec-simple-interpreter
+'((white-sp
+   (whitespace) skip)
+  (comment
+   ("%" (arbno (not #\newline))) skip)
+  (identifier
+   (letter (arbno (or letter digit "?"))) symbol)
+  (number
+   (digit (arbno digit)) number)
+  (number
+   ("-" digit (arbno digit)) number)))
+
+;Especificación Sintáctica (gramática)
+
+(define grammar-simple-interpreter
+  '((program (expression) a-program)
+    (expression (number) lit-exp)
+    (expression (identifier) var-exp)
+    (expression
+     (primitive "(" (separated-list expression ",")")")
+     primapp-exp)
+    (primitive ("+") add-prim)
+    (primitive ("-") substract-prim)
+    (primitive ("*") mult-prim)
+    (primitive ("add1") incr-prim)
+    (primitive ("sub1") decr-prim)))
+
+
+;Tipos de datos para la sintaxis abstracta de la gramática
+
+;Construidos manualmente:
+
+(define-datatype program program?
+  (a-program
+   (exp expression?)))
+
+(define-datatype expression expression?
+  (lit-exp
+   (datum number?))
+  (var-exp
+   (id symbol?))
+  (primapp-exp
+   (prim primitive?)
+   (rands (list-of expression?))))
+
+(define-datatype primitive primitive?
+  (add-prim)
+  (substract-prim)
+  (mult-prim)
+  (incr-prim)
+  (decr-prim))
+
+;Construidos automáticamente:
+
+(sllgen:make-define-datatypes scanner-spec-simple-interpreter grammar-simple-interpreter)
+
+(define show-the-datatypes
+  (lambda () (sllgen:list-define-datatypes scanner-spec-simple-interpreter grammar-simple-interpreter)))
+
+;*******************************************************************************************
+;Parser, Scanner, Interfaz
+
+;El FrontEnd (Análisis léxico (scanner) y sintáctico (parser) integrados)
+
+(define scan&parse
+  (sllgen:make-string-parser scanner-spec-simple-interpreter grammar-simple-interpreter))
+
+;El Analizador Léxico (Scanner)
+
+(define just-scan
+  (sllgen:make-string-scanner scanner-spec-simple-interpreter grammar-simple-interpreter))
+
+;El Interpretador (FrontEnd + Evaluación + señal para lectura )
+
+(define interpretador
+  (sllgen:make-rep-loop  "--> "
+    (lambda (pgm) (eval-program  pgm))
+    (sllgen:make-stream-parser 
+      scanner-spec-simple-interpreter
+      grammar-simple-interpreter)))
+
+;*******************************************************************************************
+;El Interprete
+
+;eval-program: <programa> -> numero
+; función que evalúa un programa teniendo en cuenta un ambiente dado (se inicializa dentro del programa)
+
+(define eval-program
+  (lambda (pgm)
+    (cases program pgm
+      (a-program (body)
+                 (eval-expression body (init-env))))))
+
+; Ambiente inicial
+(define init-env
+  (lambda ()
+    (extend-env
+     '(i v x)
+     '(1 5 10)
+     (empty-env))))
+
+;eval-expression: <expression> <enviroment> -> numero
+; evalua la expresión en el ambiente de entrada
+(define eval-expression
+  (lambda (exp env)
+    (cases expression exp
+      (lit-exp (datum) datum)
+      (var-exp (id) (apply-env env id))
+      (primapp-exp (prim rands)
+                   (let ((args (eval-rands rands env)))
+                     (apply-primitive prim args))))))
+
+; funciones auxiliares para aplicar eval-expression a cada elemento de una 
+; lista de operandos (expresiones)
+(define eval-rands
+  (lambda (rands env)
+    (map (lambda (x) (eval-rand x env)) rands)))
+
+(define eval-rand
+  (lambda (rand env)
+    (eval-expression rand env)))
+
+;apply-primitive: <primitiva> <list-of-expression> -> numero
+(define apply-primitive
+  (lambda (prim args)
+    (cases primitive prim
+      (add-prim () (+ (car args) (cadr args)))
+      (substract-prim () (- (car args) (cadr args)))
+      (mult-prim () (* (car args) (cadr args)))
+      (incr-prim () (+ (car args) 1))
+      (decr-prim () (- (car args) 1)))))
+
+;*******************************************************************************************
+;Ambientes
+
+;definición del tipo de dato ambiente
+(define-datatype environment environment?
+  (empty-env-record)
+  (extended-env-record (syms (list-of symbol?))
+                       (vals (list-of scheme-value?))
+                       (env environment?)))
+
+(define scheme-value? (lambda (v) #t))
+
+;empty-env:      -> enviroment
+;función que crea un ambiente vacío
+(define empty-env  
+  (lambda ()
+    (empty-env-record)))       ;llamado al constructor de ambiente vacío 
+
+
+;extend-env: <list-of symbols> <list-of numbers> enviroment -> enviroment
+;función que crea un ambiente extendido
+(define extend-env
+  (lambda (syms vals env)
+    (extended-env-record syms vals env))) 
+
+;función que busca un símbolo en un ambiente
+(define apply-env
+  (lambda (env sym)
+    (cases environment env
+      (empty-env-record ()
+                        (eopl:error 'apply-env "No binding for ~s" sym))
+      (extended-env-record (syms vals env)
+                           (let ((pos (list-find-position sym syms)))
+                             (if (number? pos)
+                                 (list-ref vals pos)
+                                 (apply-env env sym)))))))
+
+
+;****************************************************************************************
+;Funciones Auxiliares
+
+; funciones auxiliares para encontrar la posición de un símbolo
+; en la lista de símbolos de unambiente
+
+(define list-find-position
+  (lambda (sym los)
+    (list-index (lambda (sym1) (eqv? sym1 sym)) los)))
+
+(define list-index
+  (lambda (pred ls)
+    (cond
+      ((null? ls) #f)
+      ((pred (car ls)) 0)
+      (else (let ((list-index-r (list-index pred (cdr ls))))
+              (if (number? list-index-r)
+                (+ list-index-r 1)
+                #f))))))
+
+;******************************************************************************************
+;Pruebas
+
+(show-the-datatypes)
+just-scan
+scan&parse
+(just-scan "add1(x)")
+(just-scan "add1(   x   )%cccc")
+(just-scan "add1(  +(5, x)   )%cccc")
+(just-scan "add1(  +(5, %ccccc x) ")
+(scan&parse "add1(x)")
+(scan&parse "add1(   x   )%cccc")
+(scan&parse "add1(  +(5, x)   )%cccc")
+(scan&parse "add1(  +(5, %cccc
+x)) ")
+
+(define caso1 (primapp-exp (incr-prim) (list (lit-exp 5))))
+(define exp-numero (lit-exp 8))
+(define exp-ident (var-exp 'c))
+(define exp-app (primapp-exp (add-prim) (list exp-numero exp-ident)))
+(define programa (a-program exp-app))
+(define una-expresion-dificil (primapp-exp (mult-prim)
+                                           (list (primapp-exp (incr-prim)
+                                                              (list (var-exp 'v)
+                                                                    (var-exp 'y)))
+                                                 (var-exp 'x)
+                                                 (lit-exp 200))))
+(define un-programa-dificil
+    (a-program una-expresion-dificil))
+
