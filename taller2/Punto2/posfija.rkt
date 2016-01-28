@@ -11,7 +11,7 @@
 ;;                      <lit-exp (datum)>
 ;;                  ::= <identifier>
 ;;                      <var-exp (id)>
-;;                  ::= <primitive> ({<expression>}*)
+;;                  ::= ({<expression>}*) <primitive>
 ;;                      <primapp-exp (prim rands)>
 ;;  <primitive>     ::= + | - | * | add1 | sub1 
 
@@ -39,7 +39,7 @@
     (expression (number) lit-exp)
     (expression (identifier) var-exp)
     (expression
-     ("(" primitive (arbno expression)")")
+     ("(" (arbno expression) primitive")")
      primapp-exp)
     (primitive ("+") add-prim)
     (primitive ("-") substract-prim)
@@ -62,8 +62,9 @@
 ;  (var-exp
 ;   (id symbol?))
 ;  (primapp-exp
-;   (prim primitive?)
-;   (rands (list-of expression?))))
+;   (rands (list-of expression?))
+;  (prim primitive?)))
+;
 ;
 ;(define-datatype primitive primitive?
 ;  (add-prim)
@@ -128,7 +129,7 @@
     (cases expression exp
       (lit-exp (datum) datum)
       (var-exp (id) (apply-env env id))
-      (primapp-exp (prim rands)
+      (primapp-exp (rands prim)
                    (let ((args (eval-rands rands env)))
                      (apply-primitive prim args))))))
 
@@ -239,4 +240,3 @@
 ;                                                 (lit-exp 200))))
 ;(define un-programa-dificil
 ;    (a-program una-expresion-dificil))
-

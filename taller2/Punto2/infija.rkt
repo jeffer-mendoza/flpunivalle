@@ -11,7 +11,7 @@
 ;;                      <lit-exp (datum)>
 ;;                  ::= <identifier>
 ;;                      <var-exp (id)>
-;;                  ::= <primitive> ({<expression>}*)
+;;                  ::= ({<expression>}*) <primitive> ({<expression>}*)
 ;;                      <primapp-exp (prim rands)>
 ;;  <primitive>     ::= + | - | * | add1 | sub1 
 
@@ -39,7 +39,7 @@
     (expression (number) lit-exp)
     (expression (identifier) var-exp)
     (expression
-     ("(" primitive (arbno expression)")")
+     ("("  (arbno expression) primitive  (arbno expression) ")")
      primapp-exp)
     (primitive ("+") add-prim)
     (primitive ("-") substract-prim)
@@ -128,10 +128,30 @@
     (cases expression exp
       (lit-exp (datum) datum)
       (var-exp (id) (apply-env env id))
-      (primapp-exp (prim rands)
-                   (let ((args (eval-rands rands env)))
-                     (apply-primitive prim args))))))
+      (primapp-exp (rator prim rand)
+                   (if (or(null? rator)(null? rand))
+                       (if(or (equal?(return-primitive prim) 'decr)(equal?(return-primitive prim) 'incr))
+                          (apply-primitive prim (eval-rands rator  env) 0)
+                          (eopl:error 'eval-expression "La siguiente expresión no es valida (~s ~s ~s)." rator prim rand))
+                       (apply-primitive prim (eval-rands rator env)(eval-rands rand env)))
 
+                       
+                   
+                      
+                      
+                  
+               ))))
+(define return-primitive
+  (lambda (prim)
+    (cases primitive prim
+      (add-prim () 'add )
+      (substract-prim () 'sub )
+      (mult-prim () 'mult)
+      (incr-prim () 'incr )
+      (decr-prim () 'decr )
+      
+
+      )))
 ; funciones auxiliares para aplicar eval-expression a cada elemento de una 
 ; lista de operandos (expresiones)
 (define eval-rands
@@ -144,13 +164,17 @@
 
 ;apply-primitive: <primitiva> <list-of-expression> -> numero
 (define apply-primitive
-  (lambda (prim args)
+  (lambda (prim rator rand)
     (cases primitive prim
-      (add-prim () (+ (car args) (cadr args)))
-      (substract-prim () (- (car args) (cadr args)))
-      (mult-prim () (* (car args) (cadr args)))
-      (incr-prim () (+ (car args) 1))
-      (decr-prim () (- (car args) 1)))))
+      (add-prim () (+ (car rator) (car rand)))
+      (substract-prim () (- (car rator) (car rand)))
+      (mult-prim () (* (car rator) (car rand)))
+      
+      (incr-prim () (if (pair? rand) (eopl:error 'apply-primitive "La operación incremento solo espera un argumento. Encontró el siguiente argumento de más: ~s." (car rand)) (+ (car rator) 1)))
+      (decr-prim () (if (pair? rand) (eopl:error 'apply-primitive "La operación incremento solo espera un argumento. Encontró el siguiente argumento de más: ~s." (car rand)) (- (car rator) 1)))
+      
+
+      )))
 
 ;*******************************************************************************************
 ;Ambientes
@@ -239,4 +263,3 @@
 ;                                                 (lit-exp 200))))
 ;(define un-programa-dificil
 ;    (a-program una-expresion-dificil))
-
