@@ -52,33 +52,33 @@
 
 ;Construidos manualmente:
 
-(define-datatype program program?
-  (a-program
-   (exp expression?)))
-
-(define-datatype expression expression?
-  (lit-exp
-   (datum number?))
-  (var-exp
-   (id symbol?))
-  (primapp-exp
-   (rands (list-of expression?))
-   (prim primitive?)))
-
-
-(define-datatype primitive primitive?
-  (add-prim)
-  (substract-prim)
-  (mult-prim)
-  (incr-prim)
-  (decr-prim))
+;(define-datatype program program?
+;  (a-program
+;   (exp expression?)))
+;
+;(define-datatype expression expression?
+;  (lit-exp
+;   (datum number?))
+;  (var-exp
+;   (id symbol?))
+;  (primapp-exp
+;   (rands (list-of expression?))
+;  (prim primitive?)))
+;
+;
+;(define-datatype primitive primitive?
+;  (add-prim)
+;  (substract-prim)
+;  (mult-prim)
+;  (incr-prim)
+;  (decr-prim))
 
 ;Construidos automáticamente:
 
-;(sllgen:make-define-datatypes scanner-spec-simple-interpreter grammar-simple-interpreter)
-;
-;(define show-the-datatypes
-;  (lambda () (sllgen:list-define-datatypes scanner-spec-simple-interpreter grammar-simple-interpreter)))
+(sllgen:make-define-datatypes scanner-spec-simple-interpreter grammar-simple-interpreter)
+
+(define show-the-datatypes
+  (lambda () (sllgen:list-define-datatypes scanner-spec-simple-interpreter grammar-simple-interpreter)))
 
 ;*******************************************************************************************
 ;Parser, Scanner, Interfaz
