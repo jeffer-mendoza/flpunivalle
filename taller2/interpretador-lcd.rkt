@@ -34,32 +34,50 @@
 
 ;Especificación Sintáctica (gramática)
 
-(define grammar-simple-interpreter
-  '((program (expression) a-program)
-    (expression (number) lit-exp)
-    (expression (identifier) var-exp)
-    (expression
-     (primitive "(" (separated-list expression ",")")")
-     primapp-exp)
-    (primitive ("+") add-prim)
-    (primitive ("-") substract-prim)
-    (primitive ("*") mult-prim)
-    (primitive ("add1") incr-prim)
-    (primitive ("sub1") decr-prim)))
+;(define grammar-simple-interpreter
+;  '((program (expression) a-program)
+;    (expression (number) lit-exp)
+;    (expression (identifier) var-exp)
+;    (expression
+;     (primitive "(" (separated-list expression ",")")")
+;     primapp-exp)
+;    (primitive ("+") add-prim)
+;    (primitive ("-") substract-prim)
+;    (primitive ("*") mult-prim)
+;    (primitive ("add1") incr-prim)
+;    (primitive ("sub1") decr-prim)))
 
 
 ;Tipos de datos para la sintaxis abstracta de la gramática
 
 ;Construidos manualmente:
-(define-datatype expression expression?
-  (lit-exp
-   (datum number?))
-  (var-exp
-   (id symbol?))
- ; (primapp-exp
- ;  (prim primitive?)
-  ; (rands (list-of expression?)))
-  )
+
+
+
+;=====================================
+; BEGIN 1.PUNTO
+;=====================================
+
+(define-datatype chip chip?
+  (prim-chip
+   (p-chip chip-prim?))
+  (comp-chip
+   (ipl (list-of symbol?))
+   (opl (list-of symbol?))
+   (circ circuito?))
+   )
+
+(define-datatype circuito circuito?
+  (simple-circuit
+   (icl (list-of symbol?))
+   (ocl (list-of symbol?))
+   (chip chip?))
+  (complex-circuit
+   (circ circuito?)
+   (lcircs (list-of circuito?))
+   (icl (list-of symbol?))
+   (ocl (list-of symbol?)))
+   )
 
 (define-datatype chip-prim chip-prim?
   (chip-or)
@@ -72,28 +90,34 @@
 
 
 
-(define-datatype circuito circuito?
-  (simple-circuit
-   (icl expression?)
-   (ocl expression?)
-   (chip chip?))
-  (complex-circuit
-   (circ circuito?)
-   (lcircs (list-of circuito?))
-   (icl expression?)
-   (ocl expression?))
-   )
-
-(define-datatype chip chip?
-  (prim-chip
-   (p-chip chip-prim?))
-  (comp-chip
-   (ipl expression?)
-   (opl expression?)
-   (circ circuito?))
-   )
 
 
+
+;=====================================
+; END 1.PUNTO
+;=====================================
+
+;=====================================
+; BEGIN 2.PUNTO
+;=====================================
+(define circuit-example (comp-chip
+'(INA INB INC IND)
+'(OUTA)
+(complex-circuit
+ (simple-circuit '( a b ) '( e ) (chip-and))
+'(
+(simple−circuit '( c d ) '( f ) (chip and))
+(simple−circuit '( e f ) '( g ) (chip or)))
+'( a b c d )
+'( g )
+)
+))
+
+
+
+;=====================================
+; END 1.PUNTO
+;=====================================
 
 
 
@@ -132,11 +156,11 @@
 ;eval-program: <programa> -> numero
 ; función que evalúa un programa teniendo en cuenta un ambiente dado (se inicializa dentro del programa)
 
-(define eval-program
-  (lambda (pgm)
-    (cases program pgm
-      (a-program (body)
-                 (eval-expression body (init-env))))))
+;(define eval-program
+;  (lambda (pgm)
+;    (cases program pgm
+;      (a-program (body)
+;                 (eval-expression body (init-env))))))
 
 ; Ambiente inicial
 (define init-env
@@ -238,30 +262,30 @@
 ;******************************************************************************************
 ;Pruebas
 
-(show-the-datatypes)
-just-scan
-scan&parse
-(just-scan "add1(x)")
-(just-scan "add1(   x   )%cccc")
-(just-scan "add1(  +(5, x)   )%cccc")
-(just-scan "add1(  +(5, %ccccc x) ")
-(scan&parse "add1(x)")
-(scan&parse "add1(   x   )%cccc")
-(scan&parse "add1(  +(5, x)   )%cccc")
-(scan&parse "add1(  +(5, %cccc
-x)) ")
-
-(define caso1 (primapp-exp (incr-prim) (list (lit-exp 5))))
-(define exp-numero (lit-exp 8))
-(define exp-ident (var-exp 'c))
-(define exp-app (primapp-exp (add-prim) (list exp-numero exp-ident)))
-(define programa (a-program exp-app))
-(define una-expresion-dificil (primapp-exp (mult-prim)
-                                           (list (primapp-exp (incr-prim)
-                                                              (list (var-exp 'v)
-                                                                    (var-exp 'y)))
-                                                 (var-exp 'x)
-                                                 (lit-exp 200))))
-(define un-programa-dificil
-    (a-program una-expresion-dificil))
-
+;(show-the-datatypes)
+;just-scan
+;scan&parse
+;(just-scan "add1(x)")
+;(just-scan "add1(   x   )%cccc")
+;(just-scan "add1(  +(5, x)   )%cccc")
+;(just-scan "add1(  +(5, %ccccc x) ")
+;(scan&parse "add1(x)")
+;(scan&parse "add1(   x   )%cccc")
+;(scan&parse "add1(  +(5, x)   )%cccc")
+;(scan&parse "add1(  +(5, %cccc
+;x)) ")
+;
+;(define caso1 (primapp-exp (incr-prim) (list (lit-exp 5))))
+;(define exp-numero (lit-exp 8))
+;(define exp-ident (var-exp 'c))
+;(define exp-app (primapp-exp (add-prim) (list exp-numero exp-ident)))
+;(define programa (a-program exp-app))
+;(define una-expresion-dificil (primapp-exp (mult-prim)
+;                                           (list (primapp-exp (incr-prim)
+;                                                              (list (var-exp 'v)
+;                                                                    (var-exp 'y)))
+;                                                 (var-exp 'x)
+;                                                 (lit-exp 200))))
+;(define un-programa-dificil
+;    (a-program una-expresion-dificil))
+;
