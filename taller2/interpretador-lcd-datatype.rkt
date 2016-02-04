@@ -29,6 +29,15 @@
   (chip-nor)
   (chip-xnor))
 
+;=============================================
+; BEGIN ejemplo del taller
+;
+;Nota:
+;la lista de los circuitos debe crearse con
+;"list" no con "'" y la creación del tipo
+;chip-prim en los simple-circuit debe hacerse
+;con la variante prim-chip
+;=============================================
 (define circuit-example
 (comp-chip
   '(INA INB INC IND)
@@ -43,7 +52,94 @@
       '( g )
    )
 ))
- 
+;==========================
+; END ejemplo del taller
+;==========================
 
-  
+;==========================
+; BEGIN SUMADOR
 
+;;
+;; in PA PB
+;; out PS PC
+;; complex-cir (a b , d, or)
+;;             list (a b , c, and)
+;;                  (c , e, not)
+;;                  (d e, s, and)
+;;             a b
+;              s c
+;==========================
+(comp-chip
+ '(PA PB)
+ '(PS PC)
+ (complex-circuit
+   (simple-circuit '(a b) '(d) (prim-chip (chip-or)))
+   (list
+        (simple-circuit '(a b) '(c) (prim-chip (chip-and)))
+        (simple-circuit '(c) '(e) (prim-chip (chip-not)))
+        (simple-circuit '(d e) '(s) (prim-chip (chip-and)))
+   )
+   '(a b)
+   '(s c)
+))
+;==========================
+; END SUMADOR
+;==========================
+
+;==================================
+; BEGIN SUMADOR COMPLETO
+
+;;
+;; in PA PB PC
+;; out PSUM PCout
+;; complex-cir (half-adder b cin)
+;;             list (half-adder (a e))
+;;                  (d f, cout, or)
+;;             a b cin
+;              sum cout
+;==================================
+(comp-chip
+ '(PA PB)
+ '(PS PC)
+ (complex-circuit
+   (half-adder 'b 'cin)
+   (list
+        (half-adder 'a 'e)
+        (simple-circuit '(d f) '(cout) (prim-chip (chip-or)))
+   )
+   '(a b cin)
+   '(sum cout)
+))
+;==========================
+; END SUMADOR COMPLETO
+;==========================
+
+;==================================
+; BEGIN SUMADOR AUXILIAR
+;
+; Función que hace uso del sumador
+; para construir un chip
+;==================================
+(define half-adder
+  (lambda (a b)
+    (simple-circuit
+   '(a b)
+   '(s c)
+    (comp-chip
+ '(PA PB)
+ '(PS PC)
+ (complex-circuit
+   (simple-circuit '(a b) '(d) (prim-chip (chip-or)))
+   (list
+        (simple-circuit '(a b) '(c) (prim-chip (chip-and)))
+        (simple-circuit '(c) '(e) (prim-chip (chip-not)))
+        (simple-circuit '(d e) '(s) (prim-chip (chip-and)))
+   )
+   '(a b)
+   '(s c)
+))
+    )))
+
+;==========================
+; END SUMADOR AUXILIAR
+;==========================
