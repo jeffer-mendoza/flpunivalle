@@ -87,6 +87,37 @@
 ;==========================
 
 ;==================================
+; BEGIN SUMADOR AUXILIAR
+;
+; Función que hace uso del sumador
+; para construir un chip
+;==================================
+(define half-adder
+  (lambda (a b)
+    (simple-circuit
+   '(a b)
+   '(s c)
+    (comp-chip
+ '(PA PB)
+ '(PS PC)
+ (complex-circuit
+   (simple-circuit '(a b) '(d) (prim-chip (chip-or)))
+   (list
+        (simple-circuit '(a b) '(c) (prim-chip (chip-and)))
+        (simple-circuit '(c) '(e) (prim-chip (chip-not)))
+        (simple-circuit '(d e) '(s) (prim-chip (chip-and)))
+   )
+   '(a b)
+   '(s c)
+))
+    )))
+
+
+;==========================
+; END SUMADOR AUXILIAR
+;==========================
+
+;==================================
 ; BEGIN SUMADOR COMPLETO
 
 ;;
@@ -114,32 +145,68 @@
 ; END SUMADOR COMPLETO
 ;==========================
 
+
+
+
+
+;;***************
+;;*** PUNTO 3 ***
+;;***************
+
+
 ;==================================
-; BEGIN SUMADOR AUXILIAR
+; BEGIN CREAR-CHIP
 ;
-; Función que hace uso del sumador
-; para construir un chip
+;Recibe un circuito, una lista de identificadores de los puertos de entrada y una lista de
+;identificadores de los puertos de salida y produce la representaci ́on del chip correspondiente a unir
+;los cables de entrada y de salida del circuito, con los puertos de entrada y de salida se˜nalados.
 ;==================================
-(define half-adder
-  (lambda (a b)
-    (simple-circuit
-   '(a b)
-   '(s c)
+(define crear-chip
+  (lambda (cir in out)
     (comp-chip
- '(PA PB)
- '(PS PC)
- (complex-circuit
-   (simple-circuit '(a b) '(d) (prim-chip (chip-or)))
-   (list
-        (simple-circuit '(a b) '(c) (prim-chip (chip-and)))
-        (simple-circuit '(c) '(e) (prim-chip (chip-not)))
-        (simple-circuit '(d e) '(s) (prim-chip (chip-and)))
-   )
-   '(a b)
-   '(s c)
-))
+      in
+      out
+      cir
     )))
 
+;;************* PRUEBAS **********************
+(crear-chip
+ (simple-circuit '(a b) '(c)  (prim-chip (chip-or)))
+ '(INA INB)
+ '(OUTC)
+ )
 ;==========================
-; END SUMADOR AUXILIAR
+; END CREAR-CHIP
+;==========================
+
+;==================================
+; BEGIN CREAR-SHIP-PRIM
+;
+;Recibe un  ́atomo: ‘or, ‘and, ‘not, ‘xor, ‘nand, ‘nor, ‘xnor devuelve la representaci ́on
+;del respectivo chip. Se usa crear chip prim(x) donde x es un ´atomo.
+;==================================
+(define crear-chip-prim
+  (lambda (x)
+    (cond
+      ((eq? x "or") (prim-chip (chip-or)))
+       ((eq? x "not") (prim-chip (chip-not)))
+        ((eq? x "and") (prim-chip (chip-and)))
+         ((eq? x "xor") (prim-chip (chip-xor)))
+          ((eq? x "nand") (prim-chip (chip-nand)))
+           ((eq? x "nor") (prim-chip (chip-nor)))
+             ((eq? x "xnor") (prim-chip (chip-xnor)))
+      ('error)
+    )))
+
+;;************* PRUEBAS **********************
+(crear-chip-prim "or")
+(crear-chip-prim "not")
+(crear-chip-prim "and")
+(crear-chip-prim "xor")
+(crear-chip-prim "nand")
+(crear-chip-prim "nor")
+(crear-chip-prim "xnor")
+(crear-chip-prim "suma")
+;==========================
+; END CREAR-SHIP-PRIM
 ;==========================
