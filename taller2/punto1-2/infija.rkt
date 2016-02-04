@@ -41,6 +41,9 @@
     (expression
      ("("  (arbno expression) primitive  (arbno expression) ")")
      primapp-exp)
+    (expression
+     ("parse" expression)
+     parse-exp)
     (primitive ("+") add-prim)
     (primitive ("-") substract-prim)
     (primitive ("*") mult-prim)
@@ -64,7 +67,11 @@
   (primapp-exp
     (rator (list-of expression?))
    (prim primitive?)
-   (rands (list-of expression?))))
+   (rands (list-of expression?)))
+   (parse-exp
+   (exp expression?)
+   )
+  )
 
 (define-datatype primitive primitive?
   (add-prim)
@@ -73,6 +80,60 @@
   (incr-prim)
   (decr-prim))
 
+(define parse-exp-infija
+  (lambda(exp)
+    (a-program(parse-exp-infija2  exp))))
+
+(define parse-exp-infija2
+  (lambda(exp)
+    (cond
+      ((number? exp) (lit-exp exp))
+      ((list? exp)
+       (if(or(equal? (cadr exp) '+)
+             (equal? (cadr exp) '-)(equal? (cadr exp) '*))
+       (primapp-exp
+        (list(parse-exp-infija2(car exp)))
+        (parse-exp-operador(cadr exp))
+        (list(parse-exp-infija2(caddr exp)))
+        )
+       
+       (primapp-exp
+        (list(parse-exp-infija2(car exp)))
+        (parse-exp-operador(cadr exp))
+        '()
+        
+        )
+       )
+       )
+      )
+    )
+  )
+  
+
+(define parse-exp-operador
+  (lambda(operador)
+    (cond
+      ((equal? '+ operador)(add-prim))
+      ((equal? '- operador)(substract-prim))
+      ((equal? '* operador)(mult-prim))
+      ((equal? 'incr operador)(incr-prim))
+      ((equal? 'decr operador)(decr-prim))
+      (else (eopl:error 'parse-exp-operador "Primitiva Invalida: ~s" operador))
+      )
+    )
+  )
+
+;Pruebas
+;parse (1 + 2)
+;#(struct:primapp-exp (#(struct:lit-exp 1)) #(struct:add-prim) (#(struct:lit-exp 2)))
+;(parse-exp-infija '(1 + 2))
+;#(struct:a-program  #(struct:primapp-exp (#(struct:lit-exp 1)) #(struct:add-prim) (#(struct:lit-exp 2))))
+;parse ((1 incr) *(2 + 3))
+;#(struct:a-program  #(struct:primapp-exp    (#(struct:primapp-exp (#(struct:lit-exp 1)) #(struct:incr-prim) ()))
+;    #(struct:mult-prim)    (#(struct:primapp-exp (#(struct:lit-exp 2)) #(struct:add-prim) (#(struct:lit-exp 3))))))
+;(parse-exp-infija '((1 incr) *(2 + 3)))
+;#(struct:a-program  #(struct:primapp-exp    (#(struct:primapp-exp (#(struct:lit-exp 1)) #(struct:incr-prim) ()))
+;    #(struct:mult-prim)    (#(struct:primapp-exp (#(struct:lit-exp 2)) #(struct:add-prim) (#(struct:lit-exp 3))))))
 ;Construidos automáticamente:
 
 ;(sllgen:make-define-datatypes scanner-spec-simple-interpreter grammar-simple-interpreter)
@@ -129,12 +190,14 @@
     (cases expression exp
       (lit-exp (datum) datum)
       (var-exp (id) (apply-env env id))
+      (parse-exp (exp)exp)
       (primapp-exp (rator prim rand)
                    (if (or(null? rator)(null? rand))
                        (if(or (equal?(return-primitive prim) 'decr)(equal?(return-primitive prim) 'incr))
                           (apply-primitive prim (eval-rands rator  env) 0)
                           (eopl:error 'eval-expression "La siguiente expresión no es valida (~s ~s ~s)." rator prim rand))
                        (apply-primitive prim (eval-rands rator env)(eval-rands rand env)))
+                   
 
                        
                    
@@ -264,4 +327,3 @@
 ;                                                 (lit-exp 200))))
 ;(define un-programa-dificil
 ;    (a-program una-expresion-dificil))
-(interpretador)

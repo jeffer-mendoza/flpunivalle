@@ -41,6 +41,9 @@
     (expression
      ("(" (arbno expression) primitive")")
      primapp-exp)
+    (expression
+     ("parse" expression)
+     parse-exp)
     (primitive ("+") add-prim)
     (primitive ("-") substract-prim)
     (primitive ("*") mult-prim)
@@ -63,7 +66,11 @@
    (id symbol?))
   (primapp-exp
    (rands (list-of expression?))
-   (prim primitive?)))
+   (prim primitive?))
+  (parse-exp
+   (exp expression?)
+   )
+  )
 
 
 (define-datatype primitive primitive?
@@ -71,8 +78,58 @@
   (substract-prim)
   (mult-prim)
   (incr-prim)
-  (decr-prim))
+  (decr-prim)
+  )
 
+(define parse-exp-posfija
+  (lambda(exp)
+    (a-program(parse-exp-posfija2  exp))))
+
+(define parse-exp-posfija2
+  (lambda(exp)
+    (cond
+      ((number? exp) (lit-exp exp))
+      ((list? exp)
+       (if(or(equal? (caddr exp) '+)
+             (equal? (caddr exp) '-)(equal? (caddr exp) '*))
+       (primapp-exp
+        (list(parse-exp-posfija2(car exp))
+        (parse-exp-posfija2(cadr exp)))
+        (parse-exp-operador(caddr exp))
+        )
+       
+       (primapp-exp        
+        (list(parse-exp-posfija2(car exp)))
+        (parse-exp-operador(cadr exp))
+        )
+       )
+       )
+      )
+    )
+  )
+
+(define parse-exp-operador
+  (lambda(operador)
+    (cond
+      ((equal? '+ operador)(add-prim))
+      ((equal? '- operador)(substract-prim))
+      ((equal? '* operador)(mult-prim))
+      ((equal? 'incr operador)(incr-prim))
+      ((equal? 'decr operador)(decr-prim))
+      (else (eopl:error 'parse-exp-operador "Primitiva Invalida: ~s" operador))
+      )
+    )
+  )
+
+;Pruebas
+;parse (1 2 +)
+;#(struct:a-program #(struct:primapp-exp (#(struct:lit-exp 1) #(struct:lit-exp 2)) #(struct:add-prim)))
+;(parse-exp-posfija '(1 2 +))
+;
+;parse (1(2 3 +)-)
+;#(struct:primapp-exp (#(struct:lit-exp 1) #(struct:primapp-exp (#(struct:lit-exp 2) #(struct:lit-exp 3)) #(struct:add-prim))) #(struct:substract-prim))
+;(parse-exp-posfija '(1(2 3 +)-))
+;#(struct:a-program  #(struct:primapp-exp (#(struct:lit-exp 1) #(struct:primapp-exp (#(struct:lit-exp 2) #(struct:lit-exp 3)) #(struct:add-prim))) #(struct:substract-prim)))
 ;Construidos automáticamente:
 
 ;(sllgen:make-define-datatypes scanner-spec-simple-interpreter grammar-simple-interpreter)
@@ -131,7 +188,8 @@
       (var-exp (id) (apply-env env id))
       (primapp-exp (rands prim)
                    (let ((args (eval-rands rands env)))
-                     (apply-primitive prim args))))))
+                     (apply-primitive prim args)))
+      (parse-exp (exp)exp))))
 
 ; funciones auxiliares para aplicar eval-expression a cada elemento de una 
 ; lista de operandos (expresiones)
