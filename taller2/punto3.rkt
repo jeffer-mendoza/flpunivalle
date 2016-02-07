@@ -1,3 +1,12 @@
+; Integrantes:
+;  Andrés Felipe Valencia Rivera      1523227
+;  Jefferson Estiven Mendoza Hoyos    1410233
+;***********************************************
+;
+; Punto 3, Parte 1.
+; listas
+
+
 #lang eopl
 
 ;******************************************************************************************
@@ -13,7 +22,10 @@
 ;;                      <var-exp (id)>
 ;;                  ::= <primitive> ({<expression>}*(,))
 ;;                      <primapp-exp (prim rands)>
-;;  <primitive>     ::= + | - | * | add1 | sub1 
+;;                  ::= list({expression}*(,))
+;;                      <list-exp (list-exp)>
+;;
+;;  <primitive>     ::= + | - | * | add1 | sub1 | car | cdr | null | nth-list | element-list ;; se agregan primitivas de listas
 
 ;******************************************************************************************
 
@@ -41,9 +53,7 @@
     (expression
      (primitive "(" (separated-list expression ",")")")
      primapp-exp)
-     ;(expression
-      ;(primitive "(" (arbno expression) ")")
-      ;primapp-list-exp)
+    ;;se implementa el tipo de las listas
      (expression
       ("list(" (separated-list expression ",")")")
      list-exp)
@@ -52,7 +62,7 @@
     (primitive ("*") mult-prim)
     (primitive ("add1") incr-prim)
     (primitive ("sub1") decr-prim)
-;;primitiva para las listar
+;;primitiva para las listas
     (primitive ("car") car-prim)
     (primitive ("cdr") cdr-prim)
     (primitive ("null?") null-prim)
@@ -144,9 +154,6 @@
       (primapp-exp (prim rands)
                    (let ((args (eval-rands rands env)))
                      (apply-primitive prim args)))
-      ;(primapp-list-exp (prim rands)
-       ;          (let ((args (eval-rands rands env)))
-        ;            (apply-primitive prim args)))
       (list-exp (elements)
                    (let ((args (eval-rands elements env)))
                      args))
@@ -171,15 +178,64 @@
       (mult-prim () (* (car args) (cadr args)))
       (incr-prim () (+ (car args) 1))
       (decr-prim () (- (car args) 1))
+
+      ;;***************************************************
+      ;;Se agregan las interfaces para el manejo de listas
+      ;;la entrada de cada una de estás funciones son  del
+      ;;tipo abstracto list-exp, ya trasformadas en listas
+      ;;en el eval-expression
+      ;;
+      ;;INPUT: LISTA
+      ;;****************************************************
+
+      ;;
+      ;;INPUT: LISTA
+      ;;
+      ;;RETURN: number
+      ;;Proposito: Devuelve el primer elemento de la lista
       (car-prim  () (car(car args)))
+
+      ;;
+      ;;INPUT: LISTA
+      ;;
+      ;;RETURN: lista
+      ;;Proposito: Devuelve el resto de la lista
       (cdr-prim  () (cdr(car args)))
+
+      ;;
+      ;;INPUT: LISTA
+      ;;
+      ;;RETURN: #f es un lista y tiene elementos
+      ;;        #t no es una lista, no hay elementos
+      ;;Proposito: Determina si una lista es null o tiene elementos
+     
       (null-prim  () (null? (car args)))
-      (nth-list-prim () (getElement (car args) (car (cdr args))) ) ;;(getElement (car args) (cdr args)) 
+
+      ;;
+      ;;INPUT: LISTA - posición(number)
+      ;;
+      ;;RETURN:  number
+      ;;Proposito: Obtiene un elemento en la posición determinada
+      (nth-list-prim () (getElement (car args) (car (cdr args))) ) ;;(getElement (car args) (cdr args))
+
+
+      ;;
+      ;;INPUT: LISTA - elemento(number)
+      ;;
+      ;; RETURN: #f no está contenido en la lista
+      ;;         #t está contenido en la lista
+      
+      ;;Proposito: Determina si un elemento está contenido en la lista
       (element-list-prim () (contain? (car args) (car (cdr args))))
-      ;(car-prim  () (car args))
+  
 
       )))
 
+
+;;INPUT: LISTA - posición
+;;
+;;RETURN:  number
+;;Proposito: Obtiene un elemento en la posición determinada
 (define getElement
   (lambda (list pos)
         (if (null? list)
@@ -189,6 +245,12 @@
                 (getElement (cdr list) (- pos 1))))
     ))
 
+;;
+;;INPUT: LISTA - elemento(number)
+;;
+;; RETURN: #f no está contenido en la lista
+;;         #t está contenido en la lista
+;;Proposito: Determina si un elemento está contenido en la lista
 (define contain?
   (lambda (list x)
         (if (null? list)
