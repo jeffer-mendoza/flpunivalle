@@ -1,0 +1,6 @@
+todo del projecto(tareas especificas que deban realizarse)
+
+- colocar comas a la declaracion del set
+- realizar modificacion para devolver 'ok' despues de ejecutar set
+
+
